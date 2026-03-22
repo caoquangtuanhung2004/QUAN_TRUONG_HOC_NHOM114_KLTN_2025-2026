@@ -1,0 +1,725 @@
+﻿@model demomvc.Models.ThongBaoVM
+@{
+    ViewBag.Title = "Quản lý thông báo";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => console.error(error));
+</script>
+<style>
+    body {
+        background-color: #f4f6f9;
+    }
+
+    .card-header {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .text-danger {
+        font-size: 13px;
+    }
+
+    .btn-success {
+        border-radius: 20px;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .btn-close {
+        font-size: 0.9rem;
+    }
+
+    .noi-dung-modal {
+        line-height: 1.7;
+        font-size: 15px;
+    }
+
+        .noi-dung-modal img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .noi-dung-modal table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+    .noi-dung-thong-bao {
+        white-space: pre-wrap; /* giữ xuống dòng */
+        word-wrap: break-word; /* cắt từ dài */
+        word-break: break-word; /* chống chuỗi liền */
+        overflow-wrap: anywhere; /* CHỐT – không tràn */
+        max-width: 100%;
+    }
+
+    .noi-dung-modal {
+        background: #f8f9fa;
+        padding: 12px;
+        border-radius: 6px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .thongbao-header {
+        background: #e9f2ff;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    .thongbao-row {
+        transition: background 0.2s ease;
+    }
+
+        .thongbao-row:hover {
+            background: #f8f9fa;
+        }
+
+    .thongbao-title {
+        font-weight: 600;
+    }
+
+    .thongbao-actions button {
+        margin-left: 4px;
+    }
+
+    .btn-hien {
+        background-color: #198754; /* xanh */
+        color: #fff;
+        border: none;
+    }
+
+    .btn-an {
+        background-color: #dc3545; /* đỏ */
+        color: #fff;
+        border: none;
+    }
+
+    .btn-hien:hover {
+        background-color: #157347;
+    }
+
+    .btn-an:hover {
+        background-color: #bb2d3b;
+    }
+
+    .thongbao-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        /* Kích thước chuẩn cho tất cả nút */
+        .thongbao-actions .btn {
+            width: 75px; /* 👈 cùng chiều ngang */
+            height: 32px; /* 👈 cùng chiều cao */
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+        }
+
+    /* Nút trạng thái */
+    .btn-trangthai {
+        border: 1px solid transparent;
+        font-weight: 500;
+    }
+
+    .btn-hien {
+        background-color: #198754; /* xanh */
+        color: #fff;
+    }
+
+    .btn-an {
+        background-color: #dc3545; /* đỏ */
+        color: #fff;
+    }
+
+    .btn-hien:hover {
+        background-color: #157347;
+    }
+
+    .btn-an:hover {
+        background-color: #bb2d3b;
+    }
+
+    .noi-dung-modal {
+        background: #f8f9fa;
+        padding: 12px;
+        border-radius: 6px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <h3 class="text-primary text-center">📢 Quản lý thông báo</h3>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <button class="btn btn-primary" onclick="toggleForm()">
+            ➕ Tạo mới thông báo
+        </button>
+    </div>
+
+    <!-- FORM THÊM THÔNG BÁO -->
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div id="formThem"
+                 class="card shadow-lg border-0"
+                 style="display:@(ViewBag.ShowForm != null ? "block" : "none");">
+
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <span>📝 Tạo thông báo</span>
+                    <button type="button"
+                            class="btn-close btn-close-red"
+                            onclick="dongForm()"></button>
+                </div>
+
+
+                <div class="card-body">
+                    <form method="post" action="/QuanLyThongBao/ThemMoiThongBao" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tiêu đề</label>
+                            @Html.TextBoxFor(m => m.TieuDe,
+                                new { @class = "form-control", placeholder = "Nhập tiêu đề..." })
+                            @Html.ValidationMessageFor(m => m.TieuDe, "",
+                                new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nội dung</label>
+                            @Html.TextAreaFor(m => m.NoiDung, 8, 0,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Nhập nội dung thông báo...",
+                                         id = "NoiDung",
+
+                                })
+                            @Html.ValidationMessageFor(m => m.NoiDung, "",
+                                new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tải File word</label>
+                            <input type="file"
+                                   id="fileWord"
+                                   name="file"
+                                   class="form-control"
+                                   accept=".doc,.docx" />
+                            <small class="text-muted">
+                                upload file
+                            </small>
+                        </div>
+
+
+
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Gửi cho</label>
+
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.GuiChoHocSinh,
+                                    new { @class = "form-check-input", id = "hs" })
+                                <label class="form-check-label" for="hs">Học sinh</label>
+                            </div>
+
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.GuiChoGiaoVien,
+                                    new { @class = "form-check-input", id = "gv" })
+                                <label class="form-check-label" for="gv">Giáo viên</label>
+                            </div>
+
+                            @Html.ValidationSummary(true, "",
+                                new { @class = "text-danger mt-2" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Ngày kết thúc</label>
+
+                            @Html.TextBoxFor(m => m.NgayKetThucTB,
+                                "{0:yyyy-MM-ddTHH:mm}",
+                                new
+                                {
+                                    @class = "form-control",
+                                    type = "datetime-local"
+                                })
+
+                            @Html.ValidationMessageFor(m => m.NgayKetThucTB,
+                                "",
+                                new { @class = "text-danger" })
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success rounded-pill px-4">
+                                📤 Đăng thông báo
+                            </button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="my-4" />
+<h4 class="text-center text-primary mb-3">
+    📋 Danh sách thông báo đã tạo
+</h4>
+
+@if (ViewBag.DanhSachThongBao != null && ((List<demomvc.Models.ThongBao>)ViewBag.DanhSachThongBao).Any())
+{
+    <div class="card shadow-sm">
+        <!-- HEADER -->
+        <div class="card-body thongbao-header">
+            <div class="row text-center align-items-center">
+                <div class="col-md-4 text-start"> Tiêu đề</div>
+
+                <div class="col-md-3">🕒 Ngày tạo</div>
+                <div class="col-md-3">👥 Đối tượng</div>
+                <div class="col-md-2">⚙ Thao tác</div>
+                <div class="col-md-2">Trạng thái</div>
+
+            </div>
+        </div>
+
+        <!-- BODY -->
+        @foreach (var tb in (List<demomvc.Models.ThongBao>)ViewBag.DanhSachThongBao)
+        {
+            <div class="card-body border-top thongbao-row">
+                <div class="row align-items-center text-center">
+
+                    <!-- TIÊU ĐỀ -->
+                    <div class="col-md-4 text-start thongbao-title">
+                        @tb.TieuDe
+                    </div>
+
+
+                    <!-- NGÀY -->
+                    <div class="col-md-3 text-muted">
+                        @tb.NgayThongBao.ToString("dd/MM/yyyy HH:mm")
+                    </div>
+
+                    <!-- ĐỐI TƯỢNG -->
+                    <div class="col-md-3">
+                        @if (tb.GuiChoHocSinh)
+                        {
+                            <span class="badge bg-info text-dark me-1">Học sinh</span>
+                        }
+                        @if (tb.GuiChoGiaoVien)
+                        {
+                            <span class="badge bg-warning text-dark">Giáo viên</span>
+                        }
+                    </div>
+
+                    <!-- THAO TÁC -->
+                    <div class="col-md-2 thongbao-actions">
+                        @*<button class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalChiTiet"
+                                    onclick="loadChiTiet(
+                                        '@tb.TieuDe',
+                                        '@tb.NgayThongBao.ToString("dd/MM/yyyy HH:mm")',
+                                        '@tb.NoiDung.Replace("'", "\\'")',
+                                        '@(tb.GuiChoHocSinh ? "Học sinh " : "")@(tb.GuiChoGiaoVien ? "Giáo viên" : "")'
+                                    )">
+                                👁 Xem
+                            </button>*@
+                        <button class="btn btn-sm btn-outline-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalChiTiet"
+                                onclick="xemThongBao(@tb.ThongBaoID)">
+                            👁 Xem
+                        </button>
+
+
+                        @*<button class="btn btn-sm btn-outline-warning"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalSuaThongBao"
+                                    onclick="loadSuaThongBao(
+                                    @tb.ThongBaoID,
+                                    '@tb.TieuDe',
+                                    '@tb.NoiDung.Replace("'", "\\'")',
+                                    @tb.GuiChoHocSinh.ToString().ToLower(),
+                                    @tb.GuiChoGiaoVien.ToString().ToLower()
+                                )">
+                                ✏️ Sửa
+                            </button>*@
+                        <button class="btn btn-sm btn-outline-warning"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalSuaThongBao"
+                                onclick="suaThongBao(@tb.ThongBaoID)">
+                            ✏️ Sửa
+                        </button>
+
+
+                        <button class="btn btn-sm btn-outline-danger"
+                                onclick="XoaThongBao(@tb.ThongBaoID)">
+                            🗑 Xóa
+                        </button>
+                        <button class="btn btn-sm btn-trangthai @(tb.TrangThai ? "btn-an" : "btn-hien")"
+                                onclick="ToggleTrangThai(@tb.ThongBaoID)">
+                            @(tb.TrangThai ? "🙈 Ẩn" : "Hiện")
+                        </button>
+
+                    </div>
+                    <div class="col-md-2">
+                        @if (tb.TrangThai)
+                        {
+                            <span class="badge bg-success">Đang hiển thị</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Đẫ ẩn</span>
+                        }
+                    </div>
+
+
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-secondary text-center">
+        Chưa có thông báo nào.
+    </div>
+}
+
+<div class="modal fade" id="modalChiTiet" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">📢 Chi tiết thông báo</h5>
+                <button type="button" class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>📌 Tiêu đề:</strong> <span id="ctTieuDe"></span></p>
+                <p><strong>🕒 Ngày đăng:</strong> <span id="ctNgay"></span></p>
+                <p><strong>👥 Đối tượng:</strong> <span id="ctDoiTuong"></span></p>
+
+                <hr />
+                <strong class="d-block mb-2">📝 Nội dung:</strong>
+                <div class="noi-dung-modal">
+
+                    <p id="ctNoiDung"></p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSuaThongBao" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">Chỉnh sửa thông báo</h5>
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="suaId" />
+
+                <div class="mb-3">
+                    <label class="fw-semibold">Tiêu đề</label>
+                    <input type="text" id="SuaTieuDe" class="form-control" />
+                </div>
+               
+                <div class="mb-3">
+                    <label class="fw-semibold">Nội dung</label>
+                    <textarea id="suaNoiDung" class="form-control" rows="8"></textarea>
+                </div>
+
+                <script>
+                    let editorSua;
+
+                    ClassicEditor
+                        .create(document.querySelector('#suaNoiDung'))
+                        .then(editor => {
+                            editorSua = editor;
+                        })
+                        .catch(error => console.error(error));
+                </script>
+
+
+                <div class="mb-3">
+                    <label class="fw-semibold">Gửi cho</label>
+
+                    <div class="form-check">
+                        <input type="checkbox" id="suaHS" class="form-check-input" />
+                        <label class="form-check-label">Học sinh</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" id="suaGV" class="form-check-input" />
+                        <label class="form-check-label">Giáo viên</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-semibold">Ngày kết thúc</label>
+                    <input type="datetime-local"
+                           id="suaNgayKetThuc"
+                           class="form-control" />
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Đóng
+                    </button>
+
+                    <button class="btn btn-success"
+                            onclick="LuuThongBao()">
+                        💾 Lưu
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    //new
+    function xemThongBao(id) {
+        $.ajax({
+            url: '/QuanLyThongBao/ChiTiet',
+            type: 'GET',
+            data: { id: id },
+            success: function (res) {
+                $("#ctTieuDe").text(res.tieuDe);
+                $("#ctNgay").text(res.ngay);
+                $("#ctDoiTuong").text(res.doiTuong);
+
+                // ⭐ QUAN TRỌNG
+                $("#ctNoiDung").html(res.noiDung);
+            },
+            error: function () {
+                alert("❌ Không tải được chi tiết thông báo");
+            }
+        });
+    }
+
+
+    function toggleForm() {
+        var f = document.getElementById("formThem");
+        f.style.display = (f.style.display === "none" || f.style.display === "")
+            ? "block"
+            : "none";
+    }
+    function dongForm() {
+        document.getElementById("formThem").style.display = "none";
+    }
+    function loadChiTiet(tieuDe, ngay, noidung, doiTuong) {
+        document.getElementById("ctTieuDe").innerText = tieuDe;
+        document.getElementById("ctNgay").innerText = ngay;
+        document.getElementById("ctNoiDung").innerHTML = noidung;
+
+        document.getElementById("ctDoiTuong").innerText = doiTuong;
+    }
+    function XoaThongBao(id) {
+        if (!confirm("Bạn có chắc chắn muốn xóa thông báo này không?")) {
+            return;
+        }
+        $.ajax({
+            url: '/QuanLyThongBao/XoaThongBao',
+            type: 'POST',
+            data: { id: id },
+            success: function (res) {
+                if (res.success) {
+                    alert("✅ Xóa thành công!");
+                    location.reload();
+                } else {
+                    alert("❌ Xóa thất bại!");
+                }
+            },
+            error: function () {
+                alert("❌ Có lỗi xảy ra!");
+            }
+        });
+    }
+    function LuuThongBao() {
+        var ngayKetThuc = $("#suaNgayKetThuc").val();
+        $.ajax({
+            url: '/QuanLyThongBao/SuaThongBao',
+            type: 'POST',
+            data: {
+                ThongBaoID: $("#suaId").val(),
+                TieuDe: $("#SuaTieuDe").val(),
+                NoiDung: editorSua.getData(), // ⭐ CKEDITOR
+                GuiChoHocSinh: $("#suaHS").is(":checked"),
+                GuiChoGiaoVien: $("#suaGV").is(":checked"),
+                NgayKetThucTB: ngayKetThuc
+            },
+            success: function (res) {
+                if (res.success) {
+                    alert("✅ Cập nhật thành công!");
+                    location.reload();
+                } else {
+                    alert(res.message || "❌ Cập nhật thất bại!");
+                }
+            },
+            error: function () {
+                alert("❌ Lỗi hệ thống!");
+            }
+        });
+    }
+
+    function loadSuaThongBao(id, tieuDe, noiDung, hs, gv) {
+        $("#suaId").val(id);
+        $("#SuaTieuDe").val(tieuDe);
+        $("#suaNoiDung").val(noiDung);
+        $("#suaHS").prop("checked", hs);
+        $("#suaGV").prop("checked", gv);
+    }
+
+
+    function suaThongBao(id) {
+        $.ajax({
+            url: '/QuanLyThongBao/ChiTietSua',
+            type: 'GET',
+            data: { id: id },
+            success: function (res) {
+                if (!res.success) {
+                    alert("❌ Không tải được dữ liệu");
+                    return;
+                }
+
+                $("#suaId").val(res.id);
+                $("#SuaTieuDe").val(res.tieuDe);
+
+                // ⚠️ QUAN TRỌNG
+                if (editorSua) {
+                    editorSua.setData(res.noiDung || "");
+                }
+                $("#suaNgayKetThuc").val(res.ngayKetThucTB);
+                $("#suaHS").prop("checked", res.guiChoHocSinh);
+                $("#suaGV").prop("checked", res.guiChoGiaoVien);
+
+                
+            },
+            error: function () {
+                alert("❌ Lỗi gọi server");
+            }
+        });
+    }
+
+
+
+
+
+    function ToggleTrangThai(id) {
+        // if (!confirm("Xác nhận thay đổi trạng thái thông báo")) return;
+        $.ajax({
+            url: '/QuanLyThongBao/DoiTrangThai',
+            type: 'POST',
+            data: { id: id },
+            success: function (res) {
+                if (res.success) {
+                    location.reload();
+                } else {
+                    alert("Thất bại");
+                }
+            }
+        })
+    }
+    $("#fileWord").on("change", function () {
+        let file = this.files[0];
+        if (!file) return;
+
+        let formData = new FormData();
+        formData.append("file", file);
+
+        $.ajax({
+            url: "/QuanLyThongBao/DocNoiDungWord",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.success) {
+                    $("#NoiDung").val(res.html); // 👈 load vào form
+                } else {
+                    alert(res.message);
+                }
+            },
+            error: function () {
+                alert("❌ Lỗi đọc file Word");
+            }
+        });
+    });
+
+    // quan trọng
+    $("#NoiDung").on("input", function () {
+        if ($(this).val().trim() !== "") {
+            $("#fileWord").prop("disabled", true);
+        } else {
+            $("#fileWord").prop("disabled", false);
+        }
+    });
+
+    // Chọn file → disable textarea + đọc Word
+    $("#fileWord").on("change", function () {
+        let file = this.files[0];
+
+        if (!file) {
+            $("#NoiDung").prop("disabled", false);
+            return;
+        }
+
+        $("#NoiDung").val("").prop("disabled", true);
+
+        let formData = new FormData();
+        formData.append("file", file);
+
+        $.ajax({
+            url: "/QuanLyThongBao/DocNoiDungWord",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                if (res.success) {
+                    //
+                    $("#NoiDung").val(res.html);
+                } else {
+                    alert(res.message);
+                    $("#NoiDung").prop("disabled", false);
+                }
+            },
+            error: function () {
+                alert("❌ Lỗi đọc file Word");
+                $("#NoiDung").prop("disabled", false);
+            }
+        });
+    });
+
+</script>

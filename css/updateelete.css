@@ -1,0 +1,76 @@
+﻿/* Action buttons cell */
+.action-cell {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Shared for action buttons */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    font-size: 0.95rem;
+}
+
+/* Edit button - blue */
+.edit-btn {
+    background: linear-gradient(135deg,#4e73df,#224abe);
+    color: #fff;
+    border: 1px solid rgba(34,74,190,0.12);
+}
+
+    .edit-btn i {
+        font-size: 0.9rem;
+    }
+
+/* Delete button - red outline */
+.delete-btn {
+    background: #fff;
+    color: #c82333;
+    border: 1px solid #f5c6cb;
+    box-shadow: none;
+}
+
+    .delete-btn i {
+        color: #c82333;
+        font-size: 0.9rem;
+    }
+
+/* Hover effects */
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.edit-btn:hover {
+    filter: brightness(0.95);
+}
+
+.delete-btn:hover {
+    background: #f9e9ea;
+    color: #b21f2b;
+}
+
+/* On small screens: stack buttons */
+@media (max-width: 576px) {
+    .action-cell {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 8px;
+    }
+}

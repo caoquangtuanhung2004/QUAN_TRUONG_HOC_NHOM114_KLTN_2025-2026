@@ -1,0 +1,121 @@
+﻿@model demomvc.Models.TimLopViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+
+}
+<link href="~/css/danhsachlop.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link href="~/css/thongbao.css" rel="stylesheet" />
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<div class="container-fluid">
+    <div id="toast" class="toast-message"></div>
+    <script>
+        function showToast(message, isError = false) {
+            var toast = document.getElementById("toast");
+            toast.innerHTML = message;
+
+            if (isError) {
+                toast.classList.add("toast-error");
+            } else {
+                toast.classList.remove("toast-error");
+            }
+
+            toast.classList.add("toast-show");
+
+            setTimeout(function () {
+                toast.classList.remove("toast-show");
+            }, 3000);
+        }
+
+
+    </script>
+    @if (TempData["Success"] != null)
+    {
+        <script>
+        showToast('@TempData["Success"]', false);
+        </script>
+    }
+
+    <div class="top-action">
+        <a href="@Url.Action("ThemMoiLop", "QuanLyLopHoc")" class="btn btn-primary">
+            + Thêm mới lớp học
+        </a>
+        <a href="@Url.Action("PhanCongChuNhiem", "QuanLyLopHoc")" class="btn btn-primary">
+            Phân Công chủ nhiệm
+        </a>
+    </div>
+    <h2>Danh Sách Lớp Theo Năm Học</h2>
+    @Html.AntiForgeryToken()
+
+    @using (Html.BeginForm("XemLop", "QuanLyLopHoc", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="table-wrapper">
+            <div>
+                <label for="NamHocID">Năm học</label>
+                @Html.DropDownListFor(
+                    m => m.NamHocID,
+                    Model.ListNamHoc,
+                    "-- Chọn năm học --",
+                    new { @class = "form-control", id = "NamHocID" }
+                )
+                @Html.ValidationMessageFor(m => m.NamHocID, "", new { @class = "text-danger" })
+            </div>
+
+            <button class="btn btn-primary" type="submit">Xem</button>
+        </div>
+
+    }
+
+
+    @if (Model.ListLop != null && Model.ListLop.Count > 0)
+    {
+        <h3 class="mt-4">Danh sách lớp:</h3>
+
+        <table class="table table-bordered table-striped">
+            <thead style="background:#2f5f73;color:white;">
+                <tr>
+                    <th>Tên lớp</th>
+                    <th>Giáo viên chủ nhiệm</th>
+                    <th>Sĩ số</th>
+                    <th>Khối </th>
+                    <th>Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.ListLop)
+                {
+                    <tr>
+                        <td data-label="Tên lớp">@item.TenLop</td>
+                        <td data-label="Giáo viên">@item.GiaoVienChuNhiem</td>
+                        <td data-label="Sĩ số">@item.SiSo</td>
+                        <td data-label="Khối lớp">@item.TenKhoi</td>
+                        <td data-label="Trạng thái">@item.TrangThaiNamHoc</td>
+                        <td data-label="Hành động">
+                            <!-- Nút Cập nhật: chuyển sang trang cập nhật -->
+                            <a href="@Url.Action("CapNhatLop", "QuanLyLopHoc", new { id = item.LopHocID })"
+                               class="btn btn-sm btn-primary me-2">
+                                Cập nhật
+                            </a>
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+    else if (Model.NamHocID > 0)
+    {
+        <p style="color:red; margin-top:20px;">Không có lớp nào trong năm học này.</p>
+    }
+</div>
+

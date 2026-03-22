@@ -1,0 +1,170 @@
+﻿@model demomvc.Models.GiaoVien
+@{
+    ViewBag.Title = "Thông tin giáo viên";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link href="~/css/thongtinhocsinh.css" rel="stylesheet" />
+<link href="~/css/thongtinhocsinh.css" rel="stylesheet" />
+<link href="~/css/thongbao.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+
+<div class="container mt-4">
+    <div id="toast" class="toast-message"></div>
+    <script>
+     function showToast(message, isError = false) {
+         var toast = document.getElementById("toast");
+         toast.innerHTML = message;
+
+         if (isError) {
+             toast.classList.add("toast-error");
+         } else {
+             toast.classList.remove("toast-error");
+         }
+
+         toast.classList.add("toast-show");
+
+         setTimeout(function () {
+             toast.classList.remove("toast-show");
+         }, 3000);
+     }
+     @if (TempData["Success"] != null)
+ {
+     <text>showToast('@TempData["Success"]', false);</text>
+ }
+ @if (TempData["Error"] != null)
+ {
+     <text>showToast('@TempData["Error"]', true);</text>
+ }
+    </script>
+    <h2 class="text-center mt-4 bg-body-secondary">Thông tin cá nhân</h2>
+
+    <div class="row">
+        <!-- Cột trái: Ảnh và thông tin ngắn -->
+        <div class="col-md-3 text-center info-sidebar p-3">
+            <div class="position-relative d-inline-block">
+                <img src="@(
+                    !string.IsNullOrEmpty(Model?.NguoiDung?.AnhDaiDien)
+                    ? Url.Content(Model.NguoiDung.AnhDaiDien)
+                    : Url.Content("~/img/imgUser.png")
+                )"
+                     class="mb-3"
+                     style="width: 150px; height: 200px;
+                            object-fit: cover;
+                            border-radius: 12px;
+                            border: 3px solid #198754;" />
+
+                <!-- Icon cập nhật ảnh -->
+                <a href="/ThongTinGiaoVien/CapNhatAvataGV"
+                   class="position-absolute bottom-0 end-0 translate-middle p-2 bg-success rounded-circle text-white"
+                   style="cursor: pointer; border: 2px solid #fff;">
+                    <i class="fa-solid fa-camera"></i>
+                </a>
+            </div>
+
+            <!-- Họ tên -->
+            <h4 class="font-weight-bold mt-2">
+                Giáo viên: @Model.NguoiDung.HoTen
+            </h4>
+
+            <!-- Tổ bộ môn -->
+            <p class="fw-bold mt-2">
+                Tổ bộ môn: @(Model.MonHoc?.BoMon?.TenBoMon ?? "Chưa có")
+            </p>
+
+            <!-- Lớp chủ nhiệm -->
+            <p class="fw-bold mt-2">
+                Lớp chủ nhiệm:
+                @if (ViewBag.LopChuNhiem != null && ((List<demomvc.Models.LopHoc>)ViewBag.LopChuNhiem).Count > 0)
+                {
+                    foreach (var lop in (List<demomvc.Models.LopHoc>)ViewBag.LopChuNhiem)
+                    {
+                        @lop.TenLop <br />
+                    }
+                }
+                else
+                {
+                    <span>Chưa xếp lớp</span>
+                }
+            </p>
+        </div>
+
+        <!-- Cột phải: Thông tin chi tiết -->
+        <div class="col-9">
+            <h5 class="font-weight-bold text-center mt-4 bg-body-secondary">Thông tin chi tiết</h5>
+
+            <table class="table table-bordered table-striped mt-2">
+                <tr>
+                    <th>Họ và tên</th>
+                    <td>@Model.NguoiDung.HoTen</td>
+                </tr>
+                <tr>
+                    <th>Giới tính</th>
+                    <td>@Model.GioiTinh</td>
+                </tr>
+                <tr>
+                    <th>Ngày sinh</th>
+                    <td>@String.Format("{0:dd/MM/yyyy}", Model.NgaySinh)</td>
+                </tr>
+
+                <tr>
+                    <th>Môn giảng dạy</th>
+                    <td>
+                        @if (ViewBag.MonDay != null)
+                        {
+                            foreach (var mon in ViewBag.MonDay)
+                            {
+                                @mon.TenMonHoc <br />
+                            }
+                        }
+                        else
+                        {
+                            <span>Chưa có môn giảng dạy</span>
+                        }
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>Tổ bộ môn</th>
+                    <td>@(Model.MonHoc?.BoMon?.TenBoMon ?? "Chưa có")</td>
+                </tr>
+                <tr>
+                    <th>Lớp chủ nhiệm</th>
+                    <td>
+                        @if (ViewBag.LopChuNhiem != null && ((List<demomvc.Models.LopHoc>)ViewBag.LopChuNhiem).Count > 0)
+                        {
+                            foreach (var lop in (List<demomvc.Models.LopHoc>)ViewBag.LopChuNhiem)
+                            {
+                                @lop.TenLop <br />
+                            }
+                        }
+                        else
+                        {
+                            <span>Chưa xếp lớp</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.NguoiDung.Email</td>
+                </tr>
+                <tr>
+                    <th>Số điện thoại</th>
+                    <td>@Model.NguoiDung.SDT</td>
+                </tr>
+            </table>
+            <div class="text-center">
+                <a class="btn btn-success" href="/ThongTinGiaoVien/CapNhatGV/@Model.GiaoVienID">Cập nhật</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@model demomvc.Models.GiaoVien
+@{
+    ViewBag.Title = "Cập nhật thông tin giáo viên";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<link href="~/css/thongtinhocsinh.css" rel="stylesheet" />
+<link href="~/css/thongbao.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<div class="container-fluid">
+    <div id="toast" class="toast-message"></div>
+    <script>
+     function showToast(message, isError = false) {
+         var toast = document.getElementById("toast");
+         toast.innerHTML = message;
+
+         if (isError) {
+             toast.classList.add("toast-error");
+         } else {
+             toast.classList.remove("toast-error");
+         }
+
+         toast.classList.add("toast-show");
+
+         setTimeout(function () {
+             toast.classList.remove("toast-show");
+         }, 3000);
+     }
+     @if (TempData["Success"] != null)
+ {
+     <text>showToast('@TempData["Success"]', false);</text>
+ }
+ @if (TempData["Error"] != null)
+ {
+     <text>showToast('@TempData["Error"]', true);</text>
+ }
+    </script>
+    <h2 class="text-center mt-4 bg-body-secondary">Cập nhật thông tin cá nhân</h2>
+    <form action="/ThongTinGiaoVien/CapNhatGV/@Model.GiaoVienID" method="post">
+        <input type="hidden" name="GiaoVienID" value="@Model.GiaoVienID" />
+        <div class="row">
+            <div class="col-md-6">
+                <label for="HoTen">Họ tên</label>
+                <input type="text" class="form-control" id="HoTen" name="NguoiDung.HoTen" placeholder="Họ tên" value="@Model.NguoiDung.HoTen" />
+                @Html.ValidationMessage("NguoiDung.HoTen", "", new { @class = "text-danger" })
+            </div>
+            <div>
+                <label for="GioiTinh">Giới tính</label>
+                <select class="form-control" id="GioiTinh" name="GioiTinh" placeholder="Giowsii tính">
+                    @if (Model.GioiTinh == "Nam")
+                    {
+                        <option value="Nam" selected>Nam</option>
+                        <option value="Nu">Nữ</option>
+                    }
+                    else
+                    {
+                        <option value="Nam">Nam</option>
+                        <option value="Nu" selected>Nữ</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="NgaySinh">Ngày sinh</label>
+                <input type="date" class="form-control" id="NgaySinh" name="NgaySinh" placeholder="Ngày sinh"
+                       value="@Model.NgaySinh.Value.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-6">
+                <label for="Email">Email</label>
+                <input type="email" class="form-control" id="Email" name="NguoiDung.Email" placeholder="Email" value="@Model.NguoiDung.Email" />
+                @Html.ValidationMessage("NguoiDung.Email", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="Col-md-6">
+                <label for="SDT">Số điện thoại</label>
+                <input type="number" class="form-control" id="SDT" name="NguoiDung.SDT" placeholder="Số điện thoại" value="@Model.NguoiDung.SDT" />
+                @Html.ValidationMessage("NguoiDung.SDT", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-success">Cập nhật</button>
+            <a href="/ThongTinGiaoVien/" class="btn btn-danger">Hủy cập nhật</a>
+        </div>
+    </form>
+</div>
+

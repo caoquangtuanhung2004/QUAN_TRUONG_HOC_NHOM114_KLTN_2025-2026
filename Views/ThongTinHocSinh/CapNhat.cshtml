@@ -1,0 +1,220 @@
+﻿@model demomvc.Models.HocSinh
+@{
+    ViewBag.Title = "CapNhat";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<!-- CSS -->
+<link href="~/css/thongtinhocsinh.css" rel="stylesheet" />
+<link href="~/css/thongbao.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+<div class="container-fluid">
+    <div id="toast" class="toast-message"></div>
+    <script>
+     function showToast(message, isError = false) {
+         var toast = document.getElementById("toast");
+         toast.innerHTML = message;
+
+         if (isError) {
+             toast.classList.add("toast-error");
+         } else {
+             toast.classList.remove("toast-error");
+         }
+
+         toast.classList.add("toast-show");
+
+         setTimeout(function () {
+             toast.classList.remove("toast-show");
+         }, 3000);
+     }
+     @if (TempData["Success"] != null)
+ {
+     <text>showToast('@TempData["Success"]', false);</text>
+ }
+ @if (TempData["Error"] != null)
+ {
+     <text>showToast('@TempData["Error"]', true);</text>
+ }
+    </script>
+    <h2 class="text-center mt-4 bg-body-secondary">Cập nhật thông tin cá nhân</h2>
+    <form action="/ThongTinHocSinh/CapNhat/@Model.HocSinhID" method="post">
+        @*Mho thêm model:/products/Edit/@Model.ProductID" *@
+
+        @*<input type="hidden" name"MHS" value="#model.MAHS" />*@
+        <input type="hidden" name="HocSinhID" value="@Model.HocSinhID" />
+        <h5 class="font-weight-bold text-center mt-4 bg-body-secondary">Thông tin chi tiết </h5>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="HoTen">Họ tên</label>
+                @*<input type="text" class="form-control" name="ProductName" id="ProdyctName" placeholder="Product Name" value="@Model.ProductName" />*@
+                <input type="text" class="form-control" id="Ho Tenhs" name="NguoiDung.HoTen" placeholder="Họ tên" value="@Model.NguoiDung.HoTen" />
+                @Html.ValidationMessage("NguoiDung.HoTen", "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <label for="GioiTinh">Giới Tính</label>
+                <select class="form-control" id="Gioi Tinh" name="GioiTinh" placeholder="Giới tính">
+                    @if (Model.GioiTinh == "Nam")
+                    {
+                        <option value="Nam" selected>Nam</option>
+                        <option value="Nu">Nữ</option>
+                    }
+                    else
+                    {
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ" selected>Nữ</option>
+                    }
+                </select>
+                @Html.ValidationMessage("GioiTinh", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="NgaySinh">Ngày Sinh</label>
+                <input type="date" class="form-control" id="NgaySinh" name="NgaySinh" placeholder="Ngày Sinh"
+                       value="@Model.NgaySinh.Value.ToString("yyyy-MM-dd")" />
+                @Html.ValidationMessage("NgaySinh", "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label for="Khoi">Khối</label>
+                <input class="form-control" id="khoi" name="LopHoc.KhoiLop.TenKhoi" placeholder="Khối" value="@Model.LopHoc.KhoiLop.TenKhoi" readonly />
+
+
+                @Html.ValidationMessage("LopHoc.KhoiLop.TenKhoi", "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="Lop">Lớp</label>
+                @*<input type="text" class="form-control" name="ProductName" id="ProdyctName" placeholder="Product Name" value="@Model.ProductName" />*@
+
+                <input type="text" class="form-control" id="Lop" name="LopHoc.TenLop" placeholder="Lớp" value="@Model.LopHoc.TenLop" readonly />
+                @Html.ValidationMessage("LopHoc.TenLop", "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+
+                <label for="CCCD">CCCD</label>
+                <input type="number" class="form-control" id="CCCD" name="CCCD" placeholder="CCCD" value="@Model.CCCD" />
+                @Html.ValidationMessage("CCCD", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="DamToc">Dân tộc</label>
+                @*<input type="text" class="form-control" name="ProductName" id="ProdyctName" placeholder="Product Name" value="@Model.ProductName" />*@
+                <input type="text" class="form-control" id="Dan Toc" name="DanToc" placeholder="Dân tộc" value="@Model.DanToc" />
+                @Html.ValidationMessage("DanToc", "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+
+                <label for="Email">Email</label>
+                <input type="email" class="form-control" id="email" name="NguoiDung.Email" placeholder="Email" value="@Model.NguoiDung.Email" />
+                @Html.ValidationMessage("NguoiDung.Email", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="ThanhPho">Thành phố/tỉnh</label>
+                @*<input type="text" class="form-control" name="ProductName" id="ProdyctName" placeholder="Product Name" value="@Model.ProductName" />*@
+                <input type="text" class="form-control" id="Thanh pho" name="TinhThanhPho" placeholder="Thành phố" value="@Model.TinhThanhPho" />
+                @Html.ValidationMessage("TinhThanhPho", "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+
+                <label for="Quan/Huyen">Quận/ Huyện</label>
+                <input type="text" class="form-control" id="Quan/huyen" name="QuanHuyen" placeholder="Quận/ Huyện" value="@Model.QuanHuyen" />
+                @Html.ValidationMessage("QuanHuyen", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+
+                <label for="DiaChiNha">Địa chỉ nhà</label>
+                <input type="text" class="form-control" id="dai chi nha" name="DiaChiNha" placeholder="Địa chỉ nhà" value="@Model.DiaChiNha" />
+                @Html.ValidationMessage("DiaChiNha", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+
+        @{
+            var PhuHuynhBa = Model.HocSinh_PhuHuynh
+                .Where(p => p.VaiTroTrongGiaDinh == "Ba")
+                .Select(p => p.PhuHuynh)
+                .FirstOrDefault();
+            var PhuHuynhMe = Model.HocSinh_PhuHuynh
+                .Where(p => p.VaiTroTrongGiaDinh == "Mẹ")
+                .Select(p => p.PhuHuynh)
+                .FirstOrDefault();
+        }
+
+
+        <h4 class="text-center mt-4 bg-body-secondary">Cập nhật thông tin Phụ huynh</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="HoTenBa">Họ tên ba</label>
+                <input type="text" class="form-control" id="hotenba" name="HoTenBa" placeholder="Họ tên ba" value="@(PhuHuynhBa?.HoTen)" />
+                @Html.ValidationMessage("HoTenBa", "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <label for="SDT">SĐT</label>
+                <input type="text" class="form-control" id="sdtba" name="SDTBa" placeholder="SĐT" value="@(PhuHuynhBa?.SDT)" />
+                @Html.ValidationMessage("SDTBa", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="NgheNghiep">Nghề nghiệp</label>
+                <input type="text" class="form-control" id="nghenghiepba" name="NgheNghiepBa" placeholder="Nghề nghiệp" value="@(PhuHuynhBa?.NgheNghiep)" />
+                @Html.ValidationMessage("NgheNghiepBa", "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <label for="Email">Email</label>
+                <input type="email" class="form-control" id="emailba" name="EmailBa" placeholder="Email" value="@(PhuHuynhBa?.Email)" />
+                @Html.ValidationMessage("EmailBa", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <label>Họ tên mẹ</label>
+                <input type="text" class="form-control" name="HoTenMe" value="@(PhuHuynhMe?.HoTen)" />
+                @Html.ValidationMessage("HoTenMe", "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-md-6">
+                <label>SĐT</label>
+                <input type="text" class="form-control" name="SDTMe" value="@(PhuHuynhMe?.SDT)" />
+                @Html.ValidationMessage("SDTMe", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="NgheNghiep">Nghề nghiệp</label>
+                <input type="text" class="form-control" id="nghenghiepme" name="NgheNghiepMe" placeholder="Nghề nghiệp" value="@(PhuHuynhMe?.NgheNghiep)" />
+                @Html.ValidationMessage("NgheNghiepMe", "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <label for="Email">Email</label>
+                <input type="email" class="form-control" id="emailme" name="EmailMe" placeholder="Email" value="@(PhuHuynhMe?.Email)" />
+                @Html.ValidationMessage("EmailMe", "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-success">Cập nhật</button>
+            <a href="/ThongTinHocSinh" class="btn btn-danger">Hủy cập nhật</a>
+        </div>
+    </form>
+
+</div>

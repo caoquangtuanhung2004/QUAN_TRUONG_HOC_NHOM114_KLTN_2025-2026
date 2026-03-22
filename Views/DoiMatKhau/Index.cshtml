@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<link href="~/css/DoiMK.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<h3 class="text-center">Đổi mật khẩu</h3>
+
+<div class="overlay" id="changePasswordOverlay">
+    <div class="change-password-modal">
+
+        <!-- Nút đóng (X) -->
+        <button type="button" class="btn-close-modal" id="btnClose">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+
+        <h4 class="modal-title">Đổi mật khẩu</h4>
+
+        <form method="post" action="@Url.Action("DoiMatKhau", "DoiMatKhau")">
+
+            <div class="form-group">
+                <label>Mật khẩu cũ</label>
+                <input type="password" name="MatKhauCu" class="form-control" />
+                @Html.ValidationMessage("MatKhauCu", "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Mật khẩu mới</label>
+                <input type="password" name="MatKhauMoi" class="form-control" />
+                @Html.ValidationMessage("MatKhauMoi", "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Xác nhận mật khẩu</label>
+                <input type="password" name="XacNhanMatKhau" class="form-control" />
+                @Html.ValidationMessage("XacNhanMatKhau", "", new { @class = "text-danger" })
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">
+                    Lưu thay đổi
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        // Bấm nút X -> về trang chủ
+        $("#btnClose").on("click", function () {
+            window.location.href = '@Url.Action("Index", "TrangChu")';
+        });
+
+    });
+</script>
+

@@ -1,0 +1,187 @@
+﻿
+@{
+    ViewBag.Title = "PhanCongChuNhiem";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+
+@model List<demomvc.Models.PhanCongChuNhiemVM>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    /* Link trong bảng */
+    table a {
+        text-decoration: none;
+        color: black;
+        font-weight: 600;
+    }
+
+        table a:hover {
+            color: #c10000;
+        }
+
+    /* Header cố định */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background-color: #2f5f73 !important;
+        color: white;
+        z-index: 5;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    td[name="hoten"] {
+        font-weight: 700;
+    }
+
+
+    /* Màu xen kẽ */
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    /* Hover */
+    .table tbody tr:hover {
+        background-color: #e6f2ff;
+        transition: 0.2s;
+    }
+
+    .btn-back {
+        display: inline-block;
+        padding: 8px 16px;
+        background: #2f5f73;
+        color: white !important;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        font-size: 15px;
+        padding-top:5px;
+        margin-top:5px;
+        margin-bottom: 10px;
+    }
+
+        .btn-back:hover {
+            background: #1d4250;
+            color: #fff;
+            transform: translateX(-3px); /* Hiệu ứng kéo nhẹ sang trái */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+        }
+
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin: 20px auto;
+        max-width: 850px;
+    }
+
+        .search-container select,
+        .search-container input {
+            height: 42px;
+            border-radius: 8px;
+            border: 1px solid #c8c8c8;
+            padding: 6px 12px;
+            font-size: 15px;
+        }
+
+        .search-container select {
+            width: 180px;
+        }
+
+        .search-container input {
+            flex: 1;
+        }
+
+    .btn-search {
+        height: 42px;
+        padding: 0 22px;
+        border-radius: 8px;
+        border: none;
+        background-color: #2f5f73;
+        color: white;
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+        .btn-search:hover {
+            background-color: #1e4353;
+            color: #fff;
+            cursor: pointer;
+        }
+    h2 {
+        text-align: center;
+        color: #1f4e5f;
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+</style>
+<a href="@Url.Action("Index","QuanLyLopHoc")" class="btn-back">← Quay lại</a>
+<h2>Phân công chủ nhiệm cho lớp học</h2>
+
+<table class="table table-bordered table-striped">
+    <thead style="background:#2f5f73;color:white;">
+        <tr>
+            <th>ID lớp</th>
+            <th>Tên lớp</th>
+            <th>Khối</th>
+            <th>Giáo viên chủ nhiệm</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="row_@item.LopHocID">
+                <td>@item.LopHocID</td>
+                <td>@item.TenLop</td>
+                <td>@item.TenKhoi</td>
+                <td id="gv_@item.LopHocID">@item.TenGiaoVien</td>
+                <td id="action_@item.LopHocID">
+                    <button class="btn btn-primary" onclick="showDropdown(@item.LopHocID)">Phân công</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+<script>
+function showDropdown(id){
+    var html = `<select id="select_${id}" class="form-control">`;
+    @foreach (var gv in Model.FirstOrDefault()?.ListGiaoVien ?? new List<SelectListItem>())
+    {
+        <text>
+        html += `<option value="@gv.Value">@gv.Text</option>`;
+        </text>
+    }
+    html += `</select>`;
+    document.getElementById("gv_" + id).innerHTML = html;
+
+    document.getElementById("action_" + id).innerHTML =
+        `<button class="btn btn-success" onclick="saveGVCN(${id})">Lưu</button>
+         <button class="btn btn-secondary" onclick="cancelEdit(${id})">Hủy</button>`;
+}
+
+function saveGVCN(id){
+    var gvID = document.getElementById("select_" + id).value;
+    $.post("/QuanLyLopHoc/CapNhatChuNhiem",
+        { lopHocID: id, giaoVienID: gvID },
+        function(res){
+            if(res.success){ alert("phân công thành công!"); location.reload(); }
+            else { alert(res.message); }
+        }
+
+    );
+}
+
+function cancelEdit(id){ location.reload(); }
+</script>
+
+

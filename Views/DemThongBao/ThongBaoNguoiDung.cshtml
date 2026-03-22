@@ -1,0 +1,41 @@
+﻿@model List<demomvc.Models.ThongBao>
+@{
+    ViewBag.Title = "Thông báo";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+
+<link href="~/css/thongBaoNguoiDung.css" rel="stylesheet" />
+
+<div class="tb-box">
+    <div class="tb-header">📢 Thông báo</div>
+
+    @{
+        var daDoc = ViewBag.DaDoc as List<int>;
+    }
+
+    @foreach (var tb in Model)
+    {
+        bool chuaDoc = !daDoc.Contains(tb.ThongBaoID);
+
+        <div class="tb-item"
+             onclick="location.href='@Url.Action("ChiTietThongBaoNguoiDung","DemThongBao", new { id = tb.ThongBaoID })'"
+             style="cursor:pointer">
+
+            <div>
+                <span class="tb-title">
+                    @tb.TieuDe
+
+                    @if (chuaDoc)
+                    {
+                        <span class="tb-new">Mới</span>
+                    }
+                </span>
+            </div>
+
+            <div class="tb-time">
+                ⏰ @tb.NgayThongBao.ToString("dd/MM/yyyy HH:mm")
+            </div>
+        </div>
+    }
+
+</div>

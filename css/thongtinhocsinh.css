@@ -1,0 +1,119 @@
+﻿.info-sidebar {
+    background: #E0FFFF; /* Xanh nhẹ */
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #d9ead3;
+    transition: 0.3s ease-in-out;
+   
+}
+.info-inline {
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+.info-sidebar:hover {
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.15);
+}
+/* Tiêu đề bên phải */
+.details-title {
+    font-size: 18px;
+    padding: 8px;
+    font-weight: 600;
+    background-color: #dfe8e6;
+    border-radius: 5px;
+}
+
+/* --- Responsive cho màn hình nhỏ --- */
+@media (max-width: 992px) {
+    .info-sidebar {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .info-sidebar img {
+        width: 130px;
+        height: 160px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .info-sidebar img {
+        width: 100px;
+        height: 120px;
+    }
+
+    .table th {
+        width: 120px;
+        font-size: 13px;
+    }
+
+    .table td {
+        font-size: 13px;
+    }
+
+    h5, h4 {
+        font-size: 16px;
+    }
+}
+
+/* Vùng sidebar avatar */
+.info-sidebar {
+    background: #f0feff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Tùy chỉnh bảng thông tin */
+.table {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-bordered > :not(caption) > * > * {
+    border-color: #d6d6d6;
+}
+
+/* Thẻ tiêu đề cột */
+.table th {
+    width: 35%;
+    background-color: #e9f7ff;
+    color: #003049;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+/* Dòng bảng khi hover */
+.table tbody tr:hover {
+    background-color: #f5fcff;
+    transition: background 0.2s ease-in-out;
+}
+
+/* Văn bản */
+.table td {
+    font-weight: 500;
+    color: #212529;
+}
+
+/* Responsive đẹp hơn */
+@media (max-width: 768px) {
+    .info-sidebar img {
+        width: 120px;
+        height: 160px;
+    }
+
+    .table th {
+        width: 45%;
+        font-size: 14px;
+    }
+
+    .table td {
+        font-size: 14px;
+    }
+}

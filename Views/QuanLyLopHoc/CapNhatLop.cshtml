@@ -1,0 +1,83 @@
+﻿@model demomvc.Models.LopHocViewModel
+@{
+    ViewBag.Title = "CapNhatLop";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link href="~/css/thongbao.css" rel="stylesheet" />
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<div class="container-fluid">
+    <div id="toast" class="toast-message"></div>
+    <script>
+     function showToast(message, isError = false) {
+         var toast = document.getElementById("toast");
+         toast.innerHTML = message;
+
+         if (isError) {
+             toast.classList.add("toast-error");
+         } else {
+             toast.classList.remove("toast-error");
+         }
+
+         toast.classList.add("toast-show");
+
+         setTimeout(function () {
+             toast.classList.remove("toast-show");
+         }, 3000);
+     }
+     @if (TempData["Error"] != null)
+     {
+     <text>showToast('@TempData["Error"]', true);</text>
+     }
+
+    </script>
+
+    <h2 class="text-center mt-4 bg-body-secondary py-2 rounded">Cập nhật thông tin lớp học</h2>
+
+    <form action="/QuanLyLopHoc/CapNhatLop/@Model.LopHocID" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="LopHocID" value="@Model.LopHocID" />
+
+        <div class="row mt-4">
+
+            <!-- Tên lớp -->
+            <div class="col-md-6 mb-3">
+                <label for="TenLop">Tên lớp</label>
+                <input type="text" class="form-control" id="TenLop" name="TenLop"
+                       placeholder="Tên lớp" value="@Model.TenLop" required />
+            </div>
+
+            <!-- Giáo viên chủ nhiệm -->
+            <div class="col-md-6 mb-3">
+                <label for="GiaoVienChuNhiem">Giáo viên chủ nhiệm</label>
+                @Html.DropDownList("GiaoVienChuNhiem",
+                    (List<SelectListItem>)ViewBag.ListGiaoVien,
+                    "-- Chọn giáo viên --",
+                    new { @class = "form-control", @id = "GiaoVienChuNhiem" })
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!-- Khối -->
+            <div class="col-md-6 mb-3">
+                <label for="TenKhoi">Khối</label>
+                <input type="text" class="form-control" id="TenKhoi" name="TenKhoi"
+                       value="@Model.TenKhoi" readonly />
+            </div>
+
+
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success px-4">Cập nhật</button>
+            <a href="/QuanLyLopHoc/" class="btn btn-danger px-4">Hủy</a>
+        </div>
+    </form>
+</div>
+

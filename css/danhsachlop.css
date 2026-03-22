@@ -1,0 +1,172 @@
+﻿
+.top-action {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+    .top-action .btn {
+        font-size: 14px;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    .top-action .btn-primary {
+        background: #2f5f73;
+        border: none;
+    }
+
+        .top-action .btn-primary:hover {
+            background: #1e4353;
+        }
+/* ============================= */
+/* TIÊU ĐỀ TRANG */
+/* ============================= */
+h2 {
+    text-align: center;
+    color: #1f4e5f;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+
+/* ============================= */
+/* KHUNG CHỌN NĂM HỌC + NÚT XEM */
+/* ============================= */
+.table-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* responsive */
+}
+
+    .table-wrapper .form-control {
+        width: 250px;
+        border-radius: 6px;
+    }
+
+    .table-wrapper label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+.btn-primary {
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: #2f5f73;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #244854;
+    }
+
+
+/* ============================= */
+/* BẢNG DANH SÁCH LỚP */
+/* ============================= */
+
+table.table {
+    width: 70%; /* bảng nhỏ lại */
+    margin: 0 auto; /* căn giữa */
+    border-radius: 8px;
+    overflow: hidden;
+    
+}
+
+.table thead th {
+    font-weight: bold;
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+    font-size: 15px;
+    padding: 10px 12px;
+}
+
+.table tbody tr:hover {
+    background: #e5f3f7;
+    transition: 0.2s;
+}
+/* Cột Tên lớp và Giáo viên chủ nhiệm */
+table.table td:nth-child(1),
+table.table th:nth-child(1),
+table.table td:nth-child(2),
+table.table th:nth-child(2) {
+    font-weight: 600;
+}
+/* Viền bảng đậm hơn */
+
+
+/* 3 cột đầu của tiêu đề bảng */
+.table thead th:nth-child(1),
+.table thead th:nth-child(2),
+.table thead th:nth-child(4),
+.table thead th:nth-child(5),
+.table thead th:nth-child(6),
+.table thead th:nth-child(3) {
+    background-color: #1e4353 !important;
+    color: white !important;
+}
+
+
+/* ============================= */
+/* RESPONSIVE: MOBILE */
+/* ============================= */
+@media (max-width: 768px) {
+
+    .table-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+        .table-wrapper .form-control {
+            width: 100%;
+        }
+
+    table.table {
+        width: 100%;
+    }
+
+        /* chuyển bảng thành dạng card */
+        table.table,
+        table.table thead,
+        table.table tbody,
+        table.table th,
+        table.table td,
+        table.table tr {
+            display: block;
+            width: 100%;
+        }
+
+            table.table thead {
+                display: none;
+            }
+
+            table.table tbody tr {
+                margin-bottom: 15px;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                padding: 12px;
+            }
+
+            table.table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 6px;
+                border: none;
+            }
+
+                table.table td::before {
+                    content: attr(data-label);
+                    font-weight: bold;
+                    color: #2f5f73;
+                }
+}

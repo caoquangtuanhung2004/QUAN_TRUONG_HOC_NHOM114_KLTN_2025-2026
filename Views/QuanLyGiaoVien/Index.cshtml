@@ -1,0 +1,229 @@
+﻿@model List<demomvc.Models.GiaoVienVM>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<style>
+
+    .top-action {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        margin-top: 10px;
+    }
+
+        .top-action .btn {
+            font-size: 14px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .top-action .btn-primary {
+            background: #2f5f73;
+            border: none;
+        }
+
+            .top-action .btn-primary:hover {
+                background: #1e4353;
+            }
+    /* Link trong bảng */
+    table a {
+        text-decoration: none;
+        color: black;
+        font-weight: 600;
+    }
+
+        table a:hover {
+            color: #c10000;
+        }
+
+    /* Header cố định */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background-color: #2f5f73 !important;
+        color: white;
+        z-index: 5;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    /* Màu xen kẽ */
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    /* Hover */
+    .table tbody tr:hover {
+        background-color: #e6f2ff;
+        transition: 0.2s;
+    }
+
+    .title-center {
+        text-align: center;
+        margin: 20px 0;
+        font-weight: 700;
+        color: #2f5f73;
+    }
+
+
+    h2.text-center {
+        text-align: center;
+        margin-top: 10px;
+        font-weight: 700;
+        color: #2f5f73;
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin: 20px auto;
+        max-width: 850px;
+    }
+
+        .search-container select,
+        .search-container input {
+            height: 42px;
+            border-radius: 8px;
+            border: 1px solid #c8c8c8;
+            padding: 6px 12px;
+            font-size: 15px;
+        }
+
+        .search-container select {
+            width: 180px;
+        }
+
+        .search-container input {
+            flex: 1;
+        }
+
+    .btn-search {
+        height: 42px;
+        padding: 0 22px;
+        border-radius: 8px;
+        border: none;
+        background-color: #2f5f73;
+        color: white;
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+        .btn-search:hover {
+            background-color: #1e4353;
+            color: #fff;
+            cursor: pointer;
+        }
+</style>
+<div class="top-action">
+    <a href="@Url.Action("ThemMoiGV", "QuanLyGiaoVien")" class="btn btn-primary">
+        + Thêm Mới Giáo Viên
+    </a>
+
+    <a href="@Url.Action("PhanCongGiangDay", "QuanLyGiaoVien")" class="btn btn-primary">
+        Phân Công Môn Giảng Dạy
+    </a>
+
+    
+</div>
+
+
+
+<h2 class="title-center">Danh sách giáo viên</h2>
+
+
+<div class="search-container">
+    <select id="searchType" class="form-select">
+        <option value="hoten" @(ViewBag.Type == "hoten" ? "selected" : "")>Tìm theo họ tên</option>
+        <option value="monhoc" @(ViewBag.Type == "monhoc" ? "selected" : "")>Tìm theo môn học</option>
+        <option value="vaitro" @(ViewBag.Type == "vaitro" ? "selected" : "")>Tìm theo vai trò</option>
+    </select>
+
+    <input id="searchInput" type="search" class="form-control"
+           placeholder="Nhập họ tên giáo viên..." value="@ViewBag.Keyword" />
+
+    <button class="btn-search" onclick="searchGV()">Tìm kiếm</button>
+</div>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã GV</th>
+            <th>Họ tên</th>
+            <th>Giới tính</th>
+            <th>Ngày sinh</th>
+            <th>Lớp đang chủ nhiệm</th>
+            <th>Môn giảng dạy</th>
+            <th>Tổ bộ môn</th>
+            <th>Vai trò</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.GiaoVienID</td>
+                <td><a href="/QuanLyGiaoVien/ChiTietGV/@item.GiaoVienID">@item.HoTen</a></td>
+                <td>@item.GioiTinh</td>
+                <td>
+                    @(item.NgaySinh.HasValue ? item.NgaySinh.Value.ToString("d/M/yyyy") : "—")
+                </td>
+                <td>@item.LopChuNhiem</td>
+                <td>@item.TenMonHoc</td>
+                <td>@item.TenBoMon</td>
+                <td>@converRole(item.VaiTro)</td>
+                <td>@item.TrangThaiGiangDay</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@functions {
+    public string converRole(string role)
+    {
+        switch (role)
+        {
+            case "GiaoVien":
+                return "Giáo Viên";
+            case "HieuTruong":
+                return "Hiệu Trưởng";
+            case "BiThu":
+                return "Bí Thư";
+            case "HieuPho":
+                return "Hiệu Phó";
+            default:
+                return role;
+        }
+    }
+}
+<script>
+    document.getElementById("searchType").addEventListener("change", function () {
+        var type = this.value;
+        var input = document.getElementById("searchInput");
+
+        if (type === "hoten")
+            input.placeholder = "Nhập họ tên giáo viên...";
+        else if (type === "monhoc")
+            input.placeholder = "Nhập tên môn học...";
+        else if (type === "vaitro")
+            input.placeholder = "Nhập vai trò (VD: Giáo Vien, Hieu Truong...)";
+    });
+
+
+    function searchGV() {
+        var type = document.getElementById("searchType").value;
+        var keyword = document.getElementById("searchInput").value;
+
+        window.location = "/QuanLyGiaoVien/Index?type=" + type + "&keyword=" + keyword;
+    }
+
+</script>

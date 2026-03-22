@@ -1,0 +1,94 @@
+﻿/* ====== Layout chung ====== */
+.container {
+    max-width: 1000px;
+    margin-top: 30px;
+    font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+/* ====== Form chọn năm học / học kỳ ====== */
+form label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+form select.form-control {
+    border-radius: 8px;
+    padding: 10px;
+    background: #f8f9fa;
+    border: 1px solid #d0d0d0;
+    transition: 0.25s;
+}
+
+    form select.form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 6px rgba(13,110,253,0.4);
+    }
+
+form button {
+    width: 100%;
+    padding: 10px 0;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+/* ====== Bảng điểm ====== */
+table.table {
+    margin-top: 20px;
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.table thead.table-dark {
+    background: linear-gradient(90deg, #212529, #2f3336) !important;
+}
+
+.table thead th {
+    text-align: center;
+    font-size: 0.95rem;
+    padding: 12px 10px;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    padding: 12px 10px;
+    font-size: 0.95rem;
+    border-color: #e6e6e6 !important;
+}
+
+.table tbody tr:hover td {
+    background: #f7f7f7;
+}
+
+/* cột môn nổi bật */
+.table tbody td:first-child {
+    font-weight: 600;
+    color: #222;
+}
+
+/* điểm TB môn */
+.table tbody td b {
+    display: inline-block;
+    background: #e9f8e6;
+    color: #007a20;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+/* ====== Hạnh kiểm – xếp loại ====== */
+h4 {
+    margin-top: 14px;
+}
+
+    h4 b {
+        color: #007bff;
+    }
+
+/* Badge đẹp hơn */
+.badge.bg-success {
+    background: linear-gradient(90deg,#4cd964,#2ecc71) !important;
+    padding: 8px 14px;
+    font-size: 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+}

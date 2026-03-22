@@ -1,0 +1,156 @@
+﻿/* Khung form tổng */
+form {
+    max-width: 850px;
+    margin: 20px auto;
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border: 1px solid #e6e6e6;
+}
+
+/* Tiêu đề */
+h2 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 20px;
+}
+
+/* Label */
+label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* input + select */
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #bfc6d0;
+    background: #fdfdfd;
+    transition: all 0.25s ease;
+    font-size: 15px;
+}
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 8px rgba(13,110,253,0.35);
+    }
+
+/* Grid responsive */
+.row {
+    margin-top: 10px;
+}
+
+.col-md-6 {
+    margin-bottom: 15px;
+}
+
+/* Mobile dưới 768px: chia 1 cột */
+@media (max-width: 768px) {
+    .row {
+        display: block;
+    }
+
+    .col-md-6 {
+        width: 100%;
+    }
+
+    form {
+        padding: 20px;
+    }
+}
+
+/* Nút */
+button.btn-primary {
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 10px;
+    transition: 0.25s;
+}
+
+    button.btn-primary:hover {
+        background-color: #0056d6;
+    }
+
+a.btn-secondary {
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+    /* Màu đẹp cho nút hủy */
+    a.btn-secondary:hover {
+        background-color: #6c757d;
+    }
+
+/* Thông báo lỗi */
+.text-danger {
+    color: #d9534f !important;
+    font-size: 13px;
+    margin-top: 3px;
+    display: block;
+}
+
+/* Animation hiện form */
+form {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Canh giữa nút */
+.button-center {
+    width: 100%;
+    text-align: center;
+    margin-top: 25px;
+}
+
+    /* Style nút */
+    .button-center .btn {
+        padding: 10px 24px;
+        font-size: 16px;
+        border-radius: 10px;
+        font-weight: 600;
+        min-width: 120px;
+    }
+
+    /* Nút lưu */
+    .button-center .btn-primary:hover {
+        background-color: #0056d6;
+    }
+
+    /* Nút hủy */
+    .button-center .btn-secondary {
+        background: #6c757d;
+        border: none;
+    }
+
+        .button-center .btn-secondary:hover {
+            background: #555;
+        }
+
+/* Mobile: giãn khoảng cách nút */
+@media (max-width: 576px) {
+    .button-center .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

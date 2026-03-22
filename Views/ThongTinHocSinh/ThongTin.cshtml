@@ -1,0 +1,192 @@
+﻿@model demomvc.Models.HocSinh
+@{
+    ViewBag.Title = "ThongTin";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+
+<!-- CSS -->
+<link href="~/css/thongtinhocsinh.css" rel="stylesheet" />
+<link href="~/css/thongbao.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+<div class="container mt-4">
+    <div id="toast" class="toast-message"></div>
+    <script>
+        function showToast(message, isError = false) {
+            var toast = document.getElementById("toast");
+            toast.innerHTML = message;
+
+            if (isError) {
+                toast.classList.add("toast-error");
+            } else {
+                toast.classList.remove("toast-error");
+            }
+
+            toast.classList.add("toast-show");
+
+            setTimeout(function () {
+                toast.classList.remove("toast-show");
+            }, 3000);
+        }
+        @if (TempData["Success"] != null)
+    {
+        <text>showToast('@TempData["Success"]', false);</text>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <text>showToast('@TempData["Error"]', true);</text>
+    }
+    </script>
+    <h2 class="text-center mt-4 bg-body-secondary">Thông tim cá nhân</h2>
+    <div class="row">
+        @*Anh va ten*@
+        <div class="col-md-3 text-center info-sidebar p-3">
+            <div class="position-relative d-inline-block">
+                <img src="@(
+        !string.IsNullOrEmpty(Model?.NguoiDung?.AnhDaiDien)
+        ? Url.Content(Model.NguoiDung.AnhDaiDien)
+        : Url.Content("~/img/imgUser.png")
+    )"
+                     class="mb-3"
+                     style="width: 150px; height: 200px;
+                object-fit: cover;
+                border-radius: 12px;
+                border: 3px solid #198754;" />
+
+                <!-- Icon cập nhật ảnh -->
+                <a href="/ThongTinHocSinh/CapNhatAvatar"
+                   class="position-absolute bottom-0 end-0 translate-middle p-2 bg-success rounded-circle text-white"
+                   style="cursor: pointer; border: 2px solid #fff;">
+                    <i class="fa-solid fa-camera"></i>
+                </a>
+            </div>
+
+            <!--Ho Ten-->
+            <h4 class="fort-weight-bold">
+                @Session["HoTen"]
+
+            </h4>
+            <p class="fw-bold mt-2">
+                GVCN: @(Model.LopHoc?.GiaoVien?.NguoiDung?.HoTen ?? "Chưa có GVCN")
+            </p>
+
+            <p class="fw-bold mt-2">
+                Lớp: @(Model.LopHoc?.TenLop ?? "Chưa xếp lớp")
+            </p>
+
+        </div>
+
+
+        @*Thong tin chi tiet*@
+        <div class="col-9">
+
+
+            <h5 class="font-weight-bold text-center mt-4 bg-body-secondary">Thông tin chi tiết </h5>
+            <table class="table table-bordered table-striped mt-2 ">
+                <tr>
+                    <th>Họ và tên</th>
+                    <td>@(Model.NguoiDung?.HoTen)</td>
+                </tr>
+                <tr>
+                    <th>Giới tính</th>
+                    <td>@Model.GioiTinh</td>
+                </tr>
+                <tr>
+                    <th>Ngày sinh</th>
+                    <td>@String.Format("{0:dd/MM/yyyy}", Model.NgaySinh)</td>
+                </tr>
+                <tr>
+                    <th>Khối</th>
+                    <td>@(Model.LopHoc?.KhoiLop?.TenKhoi)</td>
+                </tr>
+                <tr>
+                    <th>Lớp</th>
+                    <td>@(Model.LopHoc?.TenLop)</td>
+                </tr>
+                <tr>
+                    <th>CCCD</th>
+                    <td>@Model.CCCD</td>
+                </tr>
+                <tr>
+                    <th>Dân tộc</th>
+                    <td>@Model.DanToc</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@(Model.NguoiDung?.Email)</td>
+                </tr>
+                <tr>
+                    <th>Thành phố/Tỉnh</th>
+                    <td>@Model.TinhThanhPho</td>
+                </tr>
+                <tr>
+                    <th>Quận/Huyện</th>
+                    <td>@Model.QuanHuyen</td>
+                </tr>
+                <tr>
+                    <th>Địa chỉ nhà</th>
+                    <td>@Model.DiaChiNha</td>
+                </tr>
+            </table>
+
+            <br />
+            @{
+                var PhuHuynhBa = Model.HocSinh_PhuHuynh
+                    .Where(p => p.VaiTroTrongGiaDinh == "Ba")
+                    .Select(p => p.PhuHuynh)
+                    .FirstOrDefault();
+                var PhuHuynhMe = Model.HocSinh_PhuHuynh
+                    .Where(p => p.VaiTroTrongGiaDinh == "Mẹ")
+                    .Select(p => p.PhuHuynh)
+                    .FirstOrDefault();
+            }
+            <h5 class="font-weight-bold text-center mt-4 bg-body-secondary">Thông tin phụ huynh </h5>
+            <table class="table table-bordered table-striped mt-2 ">
+                <tr>
+                    <th>Họ và tên Ba</th>
+                    <td>@(PhuHuynhBa?.HoTen ??"Chưa cập nhật")</td>
+                </tr>
+                <tr>
+                    <th>SĐT</th>
+                    <td>@(PhuHuynhBa?.SDT ??"Chưa cập nhật")</td>
+                </tr>
+                <tr>
+                    <th>Nghề nghiệp</th>
+                    <td>@(PhuHuynhBa?.NgheNghiep ??"Chưa cập nhật")</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@(PhuHuynhBa?.Email ??"Chưa cập nhật")</td>
+                </tr>
+                <tr>
+                    <th>Họ và tên Mẹ</th>
+                    <td>@(PhuHuynhMe?.HoTen ??"Chưa cập nhật")</td>
+                </tr>
+                <tr>
+                    <th>SĐT</th>
+                    <td>@(PhuHuynhMe?.SDT ??"Chưa cập nhật")</td>
+                </tr>
+                <tr>
+                    <th>Nghề nghiệp</th>
+                    <td>@(PhuHuynhMe?.NgheNghiep ??"Chưa cập nhật")</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@(PhuHuynhMe?.Email ??"Chưa cập nhật")</td>
+                </tr>
+            </table>
+            @*<button  class="btn btn-success"><a href="/ThongTinHocSinh/CapNhatThongTinHocSinh/@ITem.MHS"</button>*@
+            <div class="text-center">
+                <a class="btn btn-success" href="/ThongTinHocSinh/CapNhat/@Model.HocSinhID">Cập nhật</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="~/css/dangnhap.css" rel="stylesheet" />
+
+<div class="form-area">
+    <div class="wrapper">
+        <h2>Login</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        @using (Html.BeginForm("Index", "DangNhap", FormMethod.Post))
+        {
+            <div class="box">
+                <input type="text" name="TenDangNhap" placeholder="Tên đăng nhập" />
+                <i class="fa fa-user"></i>
+            </div>
+
+            <div class="box">
+                <input type="password" name="MatKhau" placeholder="Mật khẩu" id="passwordField" />
+                <i class="fa fa-lock"></i>
+            </div>
+
+            <div class="options">
+                <label>
+                    <input type="checkbox" id="showPassword" />
+                    Hiển thị mật khẩu
+                </label>
+                <a href="@Url.Action("Index", "QuenMatKhau")">Quên mật khẩu?</a>
+            </div>
+
+            <button type="submit">Đăng nhập</button>
+        }
+    </div>
+</div>
+
+@*<div id="forgotOverlay" class="overlay">
+    <div class="forgot-box">
+        <span class="close-btn" id="closeForgot">&times;</span>
+        <h3>Quên mật khẩu</h3>
+        @using (Html.BeginForm("GuiYeuCau", "QuenMatKhau", FormMethod.Post))
+            {
+                <input type="email" name="email" placeholder="Nhập email tài khoản của bạn" required />
+                <button type="submit">Gửi yêu cầu</button>
+            }
+    </div> 
+</div>*@
+
+<script>
+    document.getElementById("showPassword").addEventListener("change", function () {
+        var pwd = document.getElementById("passwordField");
+        pwd.type = (pwd.type === "password") ? "text" : "password";
+    });
+
+    ////phần mở quên mật khẩu
+
+    //var overlay = document.getElementById("forgotOverlay");
+    //var openBtn = document.getElementById("openForgot");
+    //var closeBtn = document.getElementById("closeForgot");
+
+    //openBtn.addEventListener("click", function () {
+    //    overlay.style.display = "flex";
+    //});
+
+    //closeBtn.addEventListener("click", function () {
+    //    overlay.style.display = "none";
+    //});
+
+    ////bấm rea ngoài dể đống
+    //window.addEventListener("click", function (e) {
+    //    if (e.target == overlay) {
+    //        overlay.style.display = "none";
+    //    }
+    //});
+</script>

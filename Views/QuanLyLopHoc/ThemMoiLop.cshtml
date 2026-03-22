@@ -1,0 +1,72 @@
+﻿@model demomvc.Models.ThemLopViewModel
+
+@{
+    ViewBag.Title = "ThemMoiLop";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<link href="~/css/addLop.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<div class="form-actions" style="text-align:left; margin-top:5px;">
+    <a href="@Url.Action("Index", "QuanLyLopHoc")" class="btn btn-secondary">Quay lại</a>
+</div>
+<h2 class="mb-3">Thêm mới lớp học</h2>
+
+
+<form action="/QuanLyLopHoc/ThemMoiLop" method="post">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+
+        <!-- Tên lớp -->
+        <div class="col-md-6">
+            <label>Tên lớp</label>
+            @Html.TextBoxFor(m => m.TenLop, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.TenLop, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Khối lớp -->
+        <div class="col-md-6">
+            <label>Khối lớp</label>
+            @Html.DropDownListFor(m => m.KhoiLopID,
+                Model.ListKhoiLop,
+                "-- Chọn khối lớp --",
+                new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.KhoiLopID, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+
+    <div class="row mt-3">
+
+        <!-- Năm học -->
+        <div class="col-md-6">
+            <label>Năm học</label>
+            @Html.DropDownListFor(m => m.NamHocID,
+                Model.ListNamHoc,
+                "-- Chọn năm học --",
+                new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NamHocID, "", new { @class = "text-danger" })
+        </div>
+
+        <!-- Giáo viên chủ nhiệm -->
+        <div class="col-md-6">
+            <label>Giáo viên chủ nhiệm</label>
+            @Html.DropDownListFor(m => m.GiaoVienID,
+                Model.ListGiaoVien,
+                "-- Chọn giáo viên --",
+                new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.GiaoVienID, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-4">Thêm mới</button>
+
+</form>

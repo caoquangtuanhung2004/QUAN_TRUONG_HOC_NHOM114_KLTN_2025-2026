@@ -1,0 +1,87 @@
+﻿/* Nền mờ đè toàn bộ trang */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Khung đổi mật khẩu */
+.change-password-modal {
+    position: relative; /* ⭐ QUAN TRỌNG cho nút X */
+    width: 420px;
+    background: #fff;
+    padding: 32px 30px 30px;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Tiêu đề */
+.modal-title {
+    text-align: center;
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+/* Input */
+.change-password-modal .form-control {
+    height: 42px;
+    border-radius: 6px;
+}
+
+/* ===== NÚT X TRONG FORM ===== */
+.btn-close-modal {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #f1f1f1;
+    border: none;
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+    .btn-close-modal:hover {
+        background: #dc3545;
+        color: #fff;
+    }
+
+/* Footer nút */
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+    .modal-footer .btn {
+        flex: 1;
+        padding: 10px;
+        border-radius: 6px;
+    }
+
+/* Hiệu ứng hiện form */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
