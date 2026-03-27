@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "ThemMoiPhong";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+@model demomvc.Models.PhongHocViewModel
+<link href="~/css/phonghocadd.css" rel="stylesheet" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<!-- JS -->
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<div class="form-actions" style="text-align:left; margin-top:5px;">
+    <a href="@Url.Action("Index", "QuanLyPhongHoc")" class="btn btn-secondary">Quay lại</a>
+</div>
+<h2 class="mb-4 ">Thêm mới phòng học</h2>
+
+<form action="/QuanLyPhongHoc/ThemMoiPhong" method="post" class="needs-validation" novalidate>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+    <div class="row g-3">
+
+        <div class="col-md-6">
+            <label class="form-label">Tên phòng <span class="text-danger">*</span></label>
+            @Html.TextBoxFor(m => m.TenPhong, new { @class = "form-control", placeholder = "Nhập tên phòng", required = "required" })
+            @Html.ValidationMessageFor(m => m.TenPhong, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Số lượng chỗ ngồi <span class="text-danger">*</span></label>
+            @Html.TextBoxFor(m => m.SoLuongChoNgoi, new
+            {
+                @class = "form-control",
+                type = "number",
+                placeholder = "Nhập số lượng chỗ ngồi",
+                min = "1",
+                required = "required",
+                oninvalid = "this.setCustomValidity('Số lượng chỗ ngồi phải lớn hơn 0')",
+                oninput = "this.setCustomValidity('')"
+            })
+            @Html.ValidationMessageFor(m => m.SoLuongChoNgoi, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Loại phòng <span class="text-danger">*</span></label>
+            @Html.DropDownListFor(m => m.LoaiPhong,
+             new SelectList(new[] {
+                 new { Value="Lý thuyết", Text="Lý thuyết"},
+                 new { Value="Thực hành", Text="Thực hành"},
+                 new { Value="Đa chức năng", Text="Đa chức năng"}
+             }, "Value", "Text"),
+             "-- Chọn loại phòng --",
+             new { @class = "form-select", required = "required" })
+            @Html.ValidationMessageFor(m => m.LoaiPhong, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Trạng thái <span class="text-danger">*</span></label>
+            @Html.DropDownListFor(m => m.TrangThai,
+             new SelectList(new[] {
+                 new { Value="Hoạt động", Text="Hoạt động"},
+                 new { Value="Sửa chữa", Text="Sửa chữa"}
+             }, "Value", "Text"),
+             "-- Chọn trạng thái --",
+             new { @class = "form-select", required = "required" })
+            @Html.ValidationMessageFor(m => m.TrangThai, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+
+    <div class="form-buttons text-center mt-4">
+        <button type="submit" class="btn btn-primary btn-lg me-2">Thêm mới</button>
+        <a href="@Url.Action("Index", "QuanLyPhongHoc")" class="btn btn-secondary btn-lg">Hủy</a>
+    </div>
+
+</form>
+
+
+
+<script>
+    // Bootstrap validation
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>

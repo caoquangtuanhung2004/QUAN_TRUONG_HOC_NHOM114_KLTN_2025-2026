@@ -1,0 +1,151 @@
+﻿
+
+
+.top-action {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+    .top-action .btn {
+        font-size: 14px;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+
+    .top-action .btn-primary {
+        background: #2f5f73;
+        border: none;
+    }
+
+        .top-action .btn-primary:hover {
+            background: #1e4353;
+        }/* Form container */
+form {
+    max-width: 700px;
+    margin: 0 auto; /* căn giữa */
+    padding: 25px 30px;
+    background: #f8f9fa; /* nền nhẹ */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Tiêu đề */
+h2 {
+    text-align: center;
+    color: #1f4e5f;
+    font-weight: 700;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+/* Label */
+.form-label {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Input & select */
+.form-control, .form-select {
+    border-radius: 8px;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    transition: 0.3s;
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: #4e73df;
+        box-shadow: 0 0 5px rgba(78,115,223,0.5);
+        outline: none;
+    }
+
+/* Validation message */
+.text-danger {
+    font-size: 0.875rem;
+    margin-top: 3px;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #224abe, #4e73df);
+    }
+
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        color: #fff;
+    }
+
+/* Row spacing */
+.row.g-3 {
+    margin-bottom: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    form {
+        padding: 20px 15px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+.form-buttons .btn-primary {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 30px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+    .form-buttons .btn-primary:hover {
+        background: linear-gradient(135deg, #224abe, #4e73df);
+    }
+
+.form-buttons .btn-secondary {
+    background: #6c757d;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 30px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+    .form-buttons .btn-secondary:hover {
+        background: #5a6268;
+        color: #fff;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-buttons .btn {
+        width: 45%;
+        margin-bottom: 10px;
+    }
+}

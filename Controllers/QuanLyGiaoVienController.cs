@@ -1,0 +1,277 @@
+﻿using demomvc.App_Start;
+using demomvc.Models;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Razor.Tokenizer.Symbols;
+using System.Web.UI.WebControls;
+
+namespace demomvc.Controllers
+{
+    [RoleAuthorize(RolesRequired = "HieuTruong")]
+    public class QuanLyGiaoVienController : Controller
+    {
+        // GET: QuanLyGiaoVien
+        QuanLyTruongHocEntities db = new QuanLyTruongHocEntities();
+        public ActionResult Index(string type, string keyword)
+        {
+            keyword = keyword ?? "";
+            string kw = bodau(keyword.ToLower());
+
+            var dsGV = (from gv in db.GiaoVien
+                        join nd in db.NguoiDung on gv.NguoiDungID equals nd.NguoiDungID
+
+                        join mh in db.MonHoc on gv.MonHocID equals mh.MonHocID into monhocGroup
+                        from mh in monhocGroup.DefaultIfEmpty()
+
+                        join bm in db.BoMon on mh.BoMonID equals bm.BoMonID into bomonGroup
+                        from bm in bomonGroup.DefaultIfEmpty()
+
+                        join lh in db.LopHoc on gv.GiaoVienID equals lh.GiaoVienChuNhiem into temp
+                        from lop in temp.DefaultIfEmpty()
+
+                        select new GiaoVienVM
+                        {
+                            GiaoVienID = gv.GiaoVienID,
+                            HoTen = nd.HoTen,
+                            NgaySinh = gv.NgaySinh,
+                            GioiTinh = gv.GioiTinh,
+                            LopChuNhiem = lop != null ? lop.TenLop : "Không chủ nhiệm",
+
+                            TenMonHoc = mh != null ? mh.TenMonHoc : "Chưa phân công",
+                            TenBoMon = bm != null ? bm.TenBoMon : "Chưa phân công",
+
+                            VaiTro = nd.VaiTro,
+                            TrangThaiGiangDay = gv.TrangThaiGiangDay,
+                        }).ToList();
+
+            //--------- TÌM KIẾM ----------
+            ViewBag.Type = type;
+            ViewBag.Keyword = keyword;
+
+            if (string.IsNullOrWhiteSpace(keyword))
+                return View(dsGV);
+
+            if (type == "hoten")
+            {
+                dsGV = dsGV.Where(g => bodau(g.HoTen.ToLower()).Contains(kw)).ToList();
+            }
+            else if (type == "monhoc")
+            {
+                dsGV = dsGV.Where(g => bodau(g.TenMonHoc.ToLower()).Contains(kw)).ToList();
+            }
+            else if (type == "vaitro")
+            {
+                dsGV = dsGV.Where(g =>
+                    convertRoleSearch(g.VaiTro).Contains(kw)
+                ).ToList();
+            }
+
+
+            return View(dsGV);
+        }
+
+
+        public string bodau(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return text;
+
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            // TRẢ VỀ FormC ĐÚNG CHUẨN
+            return stringBuilder.ToString().Replace("đ", "d").Replace("Đ", "D")
+                .Normalize(NormalizationForm.FormC);
+        }
+
+        private string convertRoleSearch(string role)
+        {
+            if (string.IsNullOrEmpty(role)) return "";
+
+            // Tách chữ hoa thành khoảng trắng
+            string spaced = System.Text.RegularExpressions.Regex.Replace(role, "([A-Z])", " $1");
+
+            return bodau(spaced.ToLower()).Trim();
+        }
+
+
+
+
+        public ActionResult ChiTietGV(int id)
+        {
+            var gvct = (from gv in db.GiaoVien
+                        join nd in db.NguoiDung on gv.NguoiDungID equals nd.NguoiDungID
+                        join mh in db.MonHoc on gv.MonHocID equals mh.MonHocID into monhocGroup
+                        from mh in monhocGroup.DefaultIfEmpty()
+                        join bm in db.BoMon on mh.BoMonID equals bm.BoMonID into bomonGroup
+                        from bm in bomonGroup.DefaultIfEmpty()
+                        join lh in db.LopHoc on gv.GiaoVienID equals lh.GiaoVienChuNhiem into temp
+                        from lop in temp.DefaultIfEmpty()  // LEFT JOIN
+                        where gv.GiaoVienID == id
+                        select new GiaoVienVM
+                        {
+                            GiaoVienID = gv.GiaoVienID,
+                            HoTen = nd.HoTen,
+                            NgaySinh = gv.NgaySinh,
+                            GioiTinh = gv.GioiTinh,
+                            LopChuNhiem = lop != null ? lop.TenLop : "Không chủ nhiệm",
+                            TenMonHoc = mh != null ? mh.TenMonHoc : "Chưa phân công",
+
+                            // Nếu bm null → Không có bộ môn
+                            TenBoMon = bm != null ? bm.TenBoMon : "Chưa phân công",
+
+                            TrangThaiGiangDay = gv.TrangThaiGiangDay,
+                            Email = nd.Email,
+                            SDT = nd.SDT,
+                            TrangThaiTK = nd.TrangThaiTK,
+                            VaiTro = nd.VaiTro
+                        }).FirstOrDefault();
+
+            if (gvct == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(gvct);
+        }
+
+
+
+
+        private string TaoTenDangNhap(string hoTen)
+        {
+            //chuan ho aho ten
+            hoTen = hoTen.Trim().ToLower();
+
+            //bo dau tieng viet
+            string normalized = hoTen.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder();
+            for (int i = 0; i < normalized.Length; i++)
+            {
+                var c = normalized[i];
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                    sb.Append(c);
+            }
+            string cleanName = sb.ToString().Replace("đ", "d");
+
+            //tach ho ten
+            var parts = cleanName.Split(' ');
+            string lastName = parts.Last();
+            string firstChars = string.Concat(parts.Take(parts.Length - 1).Select(x => x[0]));
+
+            string baseUsername = firstChars + lastName;
+
+            //kiem tra trung sername
+            string username = baseUsername;
+            int count = 1;
+
+            while (db.NguoiDung.Any(x => x.TenDangNhap == username))
+            {
+                username = baseUsername + count;
+                count++;
+            }
+            return username;
+        }
+        public ActionResult ThemMoiGV()
+        {
+            ViewBag.MonHoc = db.MonHoc.ToList();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ThemMoiGV(GiaoVienVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.MonHoc = db.MonHoc.ToList();  // Gán lại cho dropdown
+                return View(model);
+            }
+
+            // Tạo tên đăng nhập
+            string username = TaoTenDangNhap(model.HoTen);
+
+            string matkhaumacdinh = "12345";
+            string matKhauHash = PasswordHelper.HashPassword(matkhaumacdinh);//ma hóa maatjj khẩu 
+
+            var nd = new NguoiDung
+            {
+                HoTen = model.HoTen,
+                Email = model.Email,
+                SDT = model.SDT,
+                VaiTro = model.VaiTro,
+                TrangThaiTK = model.TrangThaiTK,
+                TenDangNhap = username,
+                MatKhau = matKhauHash//mat khau da mã hóa
+            };
+
+            db.NguoiDung.Add(nd);
+            db.SaveChanges();
+
+            var gv = new GiaoVien
+            {
+                NguoiDungID = nd.NguoiDungID,
+                NgaySinh = model.NgaySinh,
+                GioiTinh = model.GioiTinh,
+                TrangThaiGiangDay = model.TrangThaiGiangDay,
+                MonHocID = model.MonHocID
+            };
+
+            db.GiaoVien.Add(gv);
+            db.SaveChanges();
+            ViewBag.Message = "Thêm thành công";
+
+
+            return RedirectToAction("Index");
+        }
+
+        //phan cong giang day
+        public ActionResult PhanCongGiangDay(string type, string keyword)
+        {
+            var dsgv = (from gv in db.GiaoVien
+                        join nd in db.NguoiDung on gv.NguoiDungID equals nd.NguoiDungID
+                        join mh in db.MonHoc on gv.MonHocID equals mh.MonHocID into tempMH
+                        from mon in tempMH.DefaultIfEmpty()
+                        select new GiaoVienVM
+                        {
+                            GiaoVienID = gv.GiaoVienID,
+                            HoTen =nd.HoTen,
+                            TenMonHoc = mon !=null ? mon.TenMonHoc: "Chưa phân công"
+                        }).ToList();
+            ViewBag.Keyword = keyword;
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                dsgv = dsgv.Where(g =>
+                    bodau(g.HoTen.ToLower()).Contains(bodau(keyword.ToLower()))
+                ).ToList();
+            }
+
+            ViewBag.MonHoc = db.MonHoc.ToList();
+            return View(dsgv);
+        }
+
+        [HttpPost]
+        public ActionResult CapNhatPhanCong(int giaoVienID, int monHocID)
+        {
+            var gv = db.GiaoVien.FirstOrDefault(x => x.GiaoVienID == giaoVienID);
+            if (gv == null) return Json(new { success = false });
+
+            gv.MonHocID = monHocID;
+            db.SaveChanges();
+            return Json(new { success = true });
+        }
+    }
+}

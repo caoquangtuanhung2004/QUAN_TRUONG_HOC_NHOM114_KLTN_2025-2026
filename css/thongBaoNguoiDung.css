@@ -1,0 +1,118 @@
+﻿/* Khung thông báo */
+.tb-box {
+    max-width: 900px; /* Desktop: không quá rộng */
+    margin: 0 auto; /* Canh giữa */
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px 15px;
+}
+.tb-header {
+    font-size: 18px;
+    font-weight: bold;
+     text-align: center; 
+    color: #d60000;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+.tb-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+    .tb-item:last-child {
+        border-bottom: none;
+    }
+
+.tb-title {
+    color: #d60000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.tb-desc {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.tb-time {
+    font-size: 13px;
+    color: #777;
+    white-space: nowrap;
+}
+
+.tb-new {
+    background: red;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+.tb-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+    .tb-item:hover {
+        background: #fff5f5;
+        border-left: 4px solid #d60000;
+        padding-left: 8px;
+    }
+
+        .tb-item:hover .tb-title {
+            text-decoration: underline;
+        }
+
+        .tb-item:hover .tb-time {
+            color: #d60000;
+        }
+
+/* Tablet - iPad */
+@media (max-width: 1024px) {
+    .tb-box {
+        max-width: 95%;
+        padding: 12px;
+    }
+}
+
+/* Mobile - Android / iPhone */
+@media (max-width: 768px) {
+    .tb-box {
+        max-width: 100%;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .tb-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .tb-time {
+        font-size: 11px;
+        text-align: left;
+    }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 480px) {
+    .tb-title {
+        font-size: 13px;
+    }
+
+    .tb-desc {
+        font-size: 12px;
+    }
+}

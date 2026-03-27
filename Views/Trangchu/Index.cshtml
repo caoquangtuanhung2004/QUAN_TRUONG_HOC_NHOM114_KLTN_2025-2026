@@ -1,0 +1,315 @@
+﻿
+
+@model List<demomvc.Models.GiaoVienModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<link href="~/css/trangchu.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+
+<!-- ==================== BANNER ==================== -->
+<div class="banner-full">
+    <div class="banner-wrapper d-flex">
+
+        <div class="banner-item banner-left">
+            <img src="~/img/anhtrai.jpg" />
+        </div>
+
+        <div class="banner-item banner-center">
+            <img src="~/img/trangchugiua.jpg" />
+        </div>
+
+        <div class="banner-item banner-right">
+            <img src="~/img/anhpahi.jpg" />
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- ==================== GIỚI THIỆU TRƯỜNG ==================== -->
+<section class="intro-section container py-5">
+    <div class="row align-items-center">
+
+        <!-- IMAGE GRID -->
+        <div class="col-lg-6 mb-4">
+            <div class="image-grid">
+                <div class="img-box"><img src="~/img/hocsinh1.jpg" alt=""></div>
+                <div class="img-box"><img src="~/img/hocsinh2.jpg" alt=""></div>
+                <div class="img-box"><img src="~/img/hocsinh3.jpg" alt=""></div>
+                <div class="img-box"><img src="~/img/hocsinh4.jpg" alt=""></div>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="col-lg-6">
+            <h6 class="text-danger fw-bold">NỀN TẢNG VỮNG CHẮC</h6>
+            <h2 class="fw-bold mb-3">GIỚI THIỆU TRƯỜNG THPT ABC</h2>
+            <p class="text-muted">
+                Trường THPT ABC là môi trường giáo dục tiên tiến với đội ngũ giáo viên tâm huyết,
+                phương pháp giảng dạy hiện đại, cơ sở vật chất khang trang và hoạt động học tập đa dạng.
+                Chúng tôi cam kết mang đến cho học sinh nền tảng kiến thức vững chắc và kỹ năng cần thiết
+                để tự tin bước vào tương lai.
+            </p>
+
+            <div class="row mt-4">
+                <div class="col-md-6 mb-4 text-center">
+                    <div class="icon-box">
+                        <img src="~/img/mu.png" alt="">
+                    </div>
+                    <h5 class="fw-bold">Đội Ngũ Giáo Viên</h5>
+                    <p class="text-muted">
+                        Giáo viên giàu kinh nghiệm, tận tâm đồng hành cùng học sinh.
+                    </p>
+                </div>
+
+                <div class="col-md-6 mb-4 text-center">
+                    <div class="icon-box">
+                        <img src="~/img/sumenh.png" alt="">
+                    </div>
+                    <h5 class="fw-bold">Tầm Nhìn – Sứ Mệnh</h5>
+                    <p class="text-muted">
+                        Xây dựng môi trường học tập chất lượng, định hướng tương lai cho học sinh.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="mb-4 font-weight-bold">HỌC TẬP & LÀM THEO 5 ĐIỀU BÁC HỒ DẠY</h2>
+        <p class="mb-5">
+            Giá trị đạo đức – nhân cách – lối sống theo gương Bác Hồ, được truyền tải theo cách gần gũi và sinh động.
+        </p>
+
+        <div class="row justify-content-center equal-height">
+
+            <!-- Ô 1 -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-box">
+                    <div class="feature-img">
+                        <img src="/img/o1.jpg" />
+                    </div>
+
+                    <div class="feature-content bg-deep-blue">
+                        <div class="feature-icon">
+                            <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="#002B5B" stroke-width="2">
+                                <path d="M12 21s-6-4.35-9-8.7C1.66 9.84 3 6 6.75 6c1.73 0 3.41 1.12 4.25 2.09C11.84 7.12 13.52 6 15.25 6 19 6 20.34 9.84 21 12.3c-3 4.35-9 8.7-9 8.7z" />
+                            </svg>
+                        </div>
+
+                        <div class="feature-title">Yêu Tổ quốc, yêu đồng bào</div>
+                        <div class="feature-desc">
+                            Nuôi dưỡng lòng yêu nước và tinh thần nhân ái, mọi người xung quanh.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ô 2 -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-box">
+                    <div class="feature-img">
+                        <img src="/img/o2.jpg" />
+                    </div>
+
+                    <div class="feature-content bg-red">
+                        <div class="feature-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" stroke="#E63946" fill="none" stroke-width="2">
+                                <path d="M4 19h16M4 5h16M8 5v14M16 5v14" />
+                            </svg>
+                        </div>
+
+                        <div class="feature-title">Học tập tốt, lao động tốt</div>
+                        <div class="feature-desc">
+                            Không ngừng rèn luyện tri thức mỗi ngày để mở rộng tương lai.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ô 3 -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-box">
+                    <div class="feature-img">
+                        <img src="/img/03.jpg" />
+                    </div>
+
+                    <div class="feature-content bg-yellow">
+                        <div class="feature-icon">
+                            <svg width="40" height="40" stroke="#FFB703" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                                <path d="M3 17v-2a4 4 0 014-4h10a4 4 0 014 4v2" />
+                                <circle cx="12" cy="7" r="3" />
+                            </svg>
+                        </div>
+
+                        <div class="feature-title">Đoàn kết tốt, kỷ luật tốt.</div>
+                        <div class="feature-desc">
+                            Siêng năng, tự giác, trân trọng giá trị của lao động và nỗ lực.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ô 4 -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-box">
+                    <div class="feature-img">
+                        <img src="/img/04.jpg" />
+                    </div>
+
+                    <div class="feature-content bg-lightblue">
+                        <div class="feature-icon">
+                            <svg width="40" height="40" stroke="#8ECAE6" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M9 12l2 2l4 -4" />
+                            </svg>
+                        </div>
+
+                        <div class="feature-title">Giữ gìn vệ sinh thật tốt.</div>
+                        <div class="feature-desc">
+                            Chung sức – tôn trọng – trách nhiệm để xây dựng tập thể vững mạnh.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ô 5 -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-box">
+                    <div class="feature-img">
+                        <img src="/img/05.jpg" />
+                    </div>
+
+                    <div class="feature-content bg-green">
+                        <div class="feature-icon">
+                            <svg width="40" height="40" stroke="#2A9D8F" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm5 13H7" />
+                            </svg>
+                        </div>
+
+                        <div class="feature-title">Khiêm tốn, thật thà, dũng cảm. </div>
+                        <div class="feature-desc">
+                            Giữ sạch bản thân – lớp học – cộng đồng để tạo môi trường sống lành mạnh.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<div class="teacher-container container">
+    <h2 class="teacher-title">ĐỘI NGŨ GIÁO VIÊN</h2>
+    <p class="teacher-subtitle">Khai nguồn động lực, kiến tạo tương lai</p>
+
+    <div class="row justify-content-center">
+        @foreach (var gv in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                <div class="teacher-card">
+
+                    <div class="img-wrapper">
+                        <img src="@gv.AnhDaiDien" class="teacher-img" alt="@gv.HoTen" />
+
+                        <div class="social-icons">
+
+                            <a href="#" class="social-btn share-btn">
+                                <img src="~/img/share.png" alt="Share" />
+                            </a>
+
+                            <div class="social-hidden">
+                                <a href="#" class="social-btn">
+                                    <img src="~/img/ficon.png" alt="Facebook" />
+                                </a>
+
+                                <a href="#" class="social-btn">
+                                    <img src="~/img/igicon.png" alt="Social" />
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="teacher-body">
+                        <h5 class="teacher-name">@gv.HoTen</h5>
+                        <p class="teacher-role">@gv.VaiTro</p>
+
+                        @if (!string.IsNullOrEmpty(gv.TenBoMon))
+                        {
+                            <p class="teacher-subject">@gv.TenBoMon</p>
+                        }
+
+                        <p class="teacher-phone"><i class="fa fa-mobile-alt"></i> @gv.SDT</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (ViewBag.ThongBaoPopup != null)
+{
+    var tb = (demomvc.Models.ThongBao)ViewBag.ThongBaoPopup;
+
+    <div class="modal fade" id="modalThongBaoHome" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content shadow border-0">
+
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title w-100 text-center fw-bold fs-4">
+                        📢 THÔNG BÁO MỚI
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="text-center fw-bold text-primary fs-5 mb-1">
+                        @tb.TieuDe
+                    </div>
+
+                    <div class="text-center text-muted mb-3" style="font-size:13px">
+                        🕒 @tb.NgayThongBao.ToString("dd/MM/yyyy HH:mm")
+                    </div>
+
+                    <div class="thongbao-content p-3 bg-light rounded">
+                        @Html.Raw(tb.NoiDung)
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@if (ViewBag.ThongBaoPopup != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = new bootstrap.Modal(
+                document.getElementById("modalThongBaoHome")
+            );
+            modal.show();
+        });
+    </script>
+}

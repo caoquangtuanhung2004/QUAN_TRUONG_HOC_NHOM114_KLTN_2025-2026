@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Gửi bảng điểm";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+
+<h2>Gửi Bảng Điểm</h2>
+
+<form method="post" action="/GuiBanDiem/GuiBangDiemPost">
+    <label>Năm học:</label>
+    @Html.DropDownList("NamHocID", (SelectList)ViewBag.NamHocID,
+        "-- Chọn năm học --",
+        new { @class = "form-control", id = "NamHocID" })
+
+    <br />
+
+    <label>Học kỳ:</label>
+    @Html.DropDownList("HocKyID", (SelectList)ViewBag.HocKyID,
+        "-- Chọn học kỳ --",
+        new { @class = "form-control", id = "HocKyID" })
+
+    <br />
+    <button class="btn btn-primary">Gửi bảng điểm</button>
+</form>
+
+<!-- NHỚ IMPORT JQUERY -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $("#NamHocID").change(function () {
+
+        var id = $(this).val();
+        if (id == "") {
+            $("#HocKyID").empty().append("<option value=''>-- Chọn học kỳ --</option>");
+            return;
+        }
+
+        $.getJSON("@Url.Action("LoadHocKy", "GuiBanDiem")",
+            { namHocId: id },
+            function (data) {
+                var hk = $("#HocKyID");
+                hk.empty();
+                hk.append("<option value=''>-- Chọn học kỳ --</option>");
+                $.each(data, function (i, v) {
+                    hk.append("<option value='" + v.HocKyID + "'>" + v.TenHocKy + "</option>");
+                });
+            });
+    });
+</script>

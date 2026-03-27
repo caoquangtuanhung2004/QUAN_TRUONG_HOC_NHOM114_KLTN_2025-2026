@@ -1,0 +1,61 @@
+﻿
+@model demomvc.Models.TimLopViewModel
+@{
+    ViewBag.Title = "Quản lý thời khóa biểu";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<link href="~/css/quanlyTKB.css" rel="stylesheet" />
+<h2>Danh Sách Lớp Theo Năm Học</h2>
+
+@using (Html.BeginForm("XemLop", "QuanLyThoiKhoaBieu", FormMethod.Post))
+{
+    @Html.AntiForgeryToken() <!-- THÊM DÒNG NÀY -->
+<div class="row">
+    <div class="col-md-4">
+        <label>Năm học</label>
+        @Html.DropDownListFor(m => m.NamHocID, Model.ListNamHoc, "-- Chọn năm học --", new { @class = "form-control", id="NamHocID" })
+    </div>
+    <div class="col-md-4">
+        <label>Học kỳ</label>
+        @Html.DropDownListFor(m => m.HocKyID, Model.ListHocKy, "-- Chọn học kỳ --", new { @class = "form-control", id="HocKyID", disabled = "disabled" })
+    </div>
+
+
+
+    <div class="col-md-4">
+        <br />
+        <button class="btn btn-primary" type="submit">Xem</button>
+    </div>
+</div>
+}
+
+@if (Model.ListLop != null && Model.ListLop.Count > 0)
+{
+    <h3>Danh sách lớp:</h3>
+
+    <table class="table-class">
+        <tr>
+            <th>Tên lớp</th>
+        </tr>
+
+        @foreach (var item in Model.ListLop)
+        {
+            <tr>
+                <td>@item.TenLop</td>
+            </tr>
+        }
+    </table>
+}
+<script>
+    document.getElementById("NamHocID").addEventListener("change", function () {
+        var hocKyDrop = document.getElementById("HocKyID");
+        if (this.value === "" || this.value === "0") {
+            hocKyDrop.disabled = true;
+            hocKyDrop.selectedIndex = 0;
+        } else {
+            hocKyDrop.disabled = false;
+        }
+    });
+</script>
+
+

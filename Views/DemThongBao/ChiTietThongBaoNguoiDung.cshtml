@@ -1,0 +1,33 @@
+﻿@model demomvc.Models.ThongBao
+@{
+    ViewBag.Title = "Chi tiết thông báo";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<link href="~/css/citietthongbao.css" rel="stylesheet" />
+<div class="ct-wrapper">
+    <div class="ct-card">
+        <div class="ct-header">
+            <button class="btn-back" onclick="goBackList()"> ⬅ </button>
+            <div class="ct-title">Chi tiết thông báo</div>
+        </div>
+        <div class="ct-title">@Model.TieuDe</div>
+
+        <div class="ct-meta">
+            🕒 @Model.NgayThongBao.ToString("dd/MM/yyyy HH:mm")
+            
+        </div>
+        <hr />
+        <div class="ct-content">
+            @Html.Raw(Model.NoiDung)
+        </div>
+
+       
+
+    </div>
+</div>
+<script>
+    function goBackList() {
+        window.location.href = "/DemThongBao/ThongBaoNguoiDung";
+    }
+</script>
+

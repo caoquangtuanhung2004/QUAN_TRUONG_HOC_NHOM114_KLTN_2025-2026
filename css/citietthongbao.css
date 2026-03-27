@@ -1,0 +1,96 @@
+﻿.ct-wrapper {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 0 12px;
+}
+
+.ct-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.ct-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #d60000;
+    text-align: center;
+}
+
+.ct-meta {
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    margin-top: 6px;
+}
+
+.ct-content {
+    margin-top: 22px;
+    background: #f8f9fa;
+    padding: 18px;
+    border-radius: 6px;
+    /* ⭐ GIỮ FORM WORD */
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+    .ct-content img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .ct-content table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+/* HEADER */
+.ct-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+    /* NÚT QUAY LUI */
+    .ct-header .btn-back {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        border: none;
+        background: #f1f5ff;
+        color: #0d6efd;
+        font-size: 20px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s ease;
+    }
+
+        /* Hover */
+        .ct-header .btn-back:hover {
+            background: #0d6efd;
+            color: #fff;
+            transform: translateX(-3px);
+            box-shadow: 0 8px 18px rgba(13,110,253,0.25);
+        }
+
+        /* Click */
+        .ct-header .btn-back:active {
+            transform: scale(0.95);
+        }
+
+/* Mobile */
+@media (max-width: 576px) {
+    .ct-header .btn-back {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        border-radius: 8px;
+    }
+}

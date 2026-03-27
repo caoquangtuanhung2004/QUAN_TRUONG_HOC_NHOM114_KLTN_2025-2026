@@ -1,0 +1,727 @@
+﻿/* Xóa khoảng trống toàn hệ thống */
+html, body {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden; /* NGĂN CUỘN NGANG TOÀN TRANG */
+}
+
+/* Khung banner full width sát rìa */
+.banner-full {
+    width: 100vw; /* chiếm đúng chiều rộng màn hình */
+    margin-left: calc(50% - 50vw); /* ép sát 2 bên */
+    margin-right: calc(50% - 50vw);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Khung banner */
+.banner-wrapper {
+    display: flex;
+    width: 100%;
+    height: 32vw; /* Tỷ lệ theo chiều ngang */
+    max-height: 500px;
+    overflow: hidden;
+}
+
+/* Item chung */
+.banner-item {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+    .banner-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+/* Ảnh trái – phải nằm trên */
+.banner-left,
+.banner-right {
+    z-index: 3;
+}
+
+/* Ảnh giữa rộng hơn chút */
+.banner-center {
+    flex: 1.5;
+    z-index: 1;
+    margin: 0 -60px; /* Chiếm rộng hơn nhưng KHÔNG overflow */
+}
+
+/* CẮT CHÉO KHÔNG HỞ */
+.banner-left {
+    clip-path: polygon(0 0, 90% 0, 100% 100%, 0 100%);
+}
+
+.banner-center {
+    clip-path: polygon(-12% 0, 112% 0, 100% 100%, 0 100%);
+}
+
+.banner-right {
+    clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* ================== GIỚI THIỆU TRƯỜNG ================== */
+
+/*.image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+    .image-grid .img-box {
+        width: 100%;
+        height: 230px;
+        border-radius: 30px;
+        overflow: hidden;
+    }
+
+        .image-grid .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+*/
+/* GRID 2 CỘT CÂN ĐỀU */
+/* GRID 2 CỘT */
+.intro-section {
+    
+    background: linear-gradient(180deg, #ffe6e8, #fff8f9);
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+    /* KHUNG ẢNH */
+    .image-grid .img-box {
+        width: 100%;
+        aspect-ratio: 1.25;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+        /* ẢNH BÊN TRONG */
+        .image-grid .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.45s ease;
+        }
+
+
+        /* ================= BO GÓC ĐÚNG TỪNG VỊ TRÍ ================= */
+
+        /* ẢNH 1 (trên trái) => bo TRÊN TRÁI + TRÊN PHẢI + DƯỚI TRÁI */
+        .image-grid .img-box:nth-child(1) {
+            border-top-left-radius: 28px;
+            border-top-right-radius: 28px;
+            border-bottom-left-radius: 28px;
+        }
+
+        /* ẢNH 2 (trên phải) => 3 góc tròn trừ trong */
+        .image-grid .img-box:nth-child(2) {
+            border-top-right-radius: 28px;
+            border-top-left-radius: 28px;
+            border-bottom-right-radius: 28px;
+        }
+
+        /* ẢNH 3 (dưới trái) => 3 góc tròn trừ trong */
+        .image-grid .img-box:nth-child(3) {
+            border-bottom-left-radius: 28px;
+            border-top-left-radius: 28px;
+            border-bottom-right-radius: 28px;
+        }
+
+        /* ẢNH 4 (dưới phải) => bo 3 góc ngoài */
+        .image-grid .img-box:nth-child(4) {
+            border-bottom-right-radius: 28px;
+            border-top-right-radius: 28px;
+            border-bottom-left-radius: 28px;
+        }
+
+        /* ================= HIỆU ỨNG HOVER ĐẸP ================= */
+
+        .image-grid .img-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.20);
+        }
+
+            .image-grid .img-box:hover img {
+                transform: scale(1.08);
+                filter: brightness(1.05);
+            }
+
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 576px) {
+    .image-grid {
+        grid-template-columns: 1fr;
+    }
+
+        .image-grid .img-box {
+            aspect-ratio: 1.3;
+        }
+
+        /* Bo góc toàn bộ khi về mobile – nhìn đẹp hơn */
+        .image-grid .img-box {
+            border-radius: 22px !important;
+        }
+}
+
+
+
+
+.icon-box {
+    width: 95px;
+    height: 95px;
+    margin: 0 auto 15px;
+    background: #ffe6e6; /* hồng nhạt */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.35s ease, transform 0.35s ease;
+}
+
+    .icon-box img {
+        width: 60px;
+        height: 60px;
+    }
+
+/* ================== RESPONSIVE ================== */
+
+@media (max-width: 992px) {
+    .banner-wrapper {
+        height: 48vw;
+    }
+
+    .banner-center {
+        margin: 0 -40px;
+    }
+
+    .image-grid .img-box {
+        height: 200px;
+        border-radius: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .banner-wrapper {
+        height: 60vw;
+    }
+
+    .banner-center {
+        margin: 0 -20px;
+        flex: 1.2;
+    }
+
+    .image-grid {
+        grid-template-columns: 1fr;
+    }
+
+        .image-grid .img-box {
+            height: 180px;
+        }
+
+    .icon-box {
+        width: 80px;
+        height: 80px;
+    }
+
+        .icon-box img {
+            width: 42px;
+            height: 42px;
+        }
+}
+.icon-box:hover {
+    background: #DC143C; /* hồng đậm hơn */
+    transform: scale(1.1); /* phóng nhẹ toàn khối */
+}
+
+    .icon-box:hover img {
+        transform: scale(1.15); /* icon to lên */
+        filter: brightness(1.1); /* sáng hơn nhẹ */
+    }
+
+
+
+/*Phần 5 điều bac hồ*/
+/* ============================
+   KHUNG TỔNG — KHÔNG HOVER
+============================ */
+
+.feature-box {
+    border-radius: 26px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    position: relative;
+    transition: 0.3s ease;
+}
+
+/* ============================
+   ẢNH — HOVER TO RA
+============================ */
+.feature-img img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+/* Hover phóng to ảnh */
+.feature-box:hover .feature-img img {
+    transform: scale(1.08);
+}
+
+/* ============================
+   PHẦN NỘI DUNG
+============================ */
+.feature-content {
+    padding: 70px 25px 35px;
+    position: relative;
+    border-bottom-left-radius: 26px;
+    border-bottom-right-radius: 26px;
+    text-align: center;
+    color: #fff;
+    transition: transform 0.35s ease;
+}
+
+/* Hover nội dung đi lên */
+.feature-box:hover .feature-content {
+    transform: translateY(-10px);
+}
+
+/* ============================
+   ICON NỔI
+============================ */
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 22px;
+    background: #fff;
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: transform 0.35s ease;
+}
+
+/* Icon cũng đi lên nhẹ theo content */
+.feature-box:hover .feature-icon {
+    transform: translateX(-50%) translateY(-6px);
+}
+
+/* SVG */
+.feature-icon svg {
+    width: 42px;
+    height: 42px;
+}
+
+/* ============================
+   TEXT
+============================ */
+.feature-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.feature-desc {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* ============================
+   5 MÀU RIÊNG
+============================ */
+.bg-deep-blue {
+    background: #012F70;
+}
+
+.bg-red {
+    background: #E63946;
+}
+
+.bg-yellow {
+    background: #F8C44C;
+    color: #000 !important;
+}
+
+.bg-lightblue {
+    background: #8ECAE6;
+    color: #000 !important;
+}
+
+.bg-green {
+    background: #2A9D8F;
+}
+
+.col-md-6 col-lg-3 mb-4{
+    background-color:bisque;
+}
+/* --- ĐẶT ROW LÀ FLEX CHO CÁC BOX CAO BẰNG NHAU --- */
+.row.equal-height {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* CỘT LUÔN CAO BẰNG NHAU */
+.equal-height > div {
+    display: flex;
+}
+
+/* BOX CỐ ĐỊNH CHIỀU CAO THEO CỘT */
+.feature-box {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ẢNH KHÔNG BỊ MÉO, CO GIÃN ĐÚNG */
+.feature-img img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+}
+
+/* CONTENT CHIỀU CAO LINH HOẠT */
+.feature-content {
+    flex-grow: 1;
+}
+
+
+
+
+
+/*Giao vien ---------------------------------------------------------*/
+/*.teacher-container {
+    margin-top: 50px;
+}
+
+.teacher-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.teacher-subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 40px;
+}
+
+.teacher-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    transition: 0.3s ease;
+}
+
+    .teacher-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+    }
+
+.teacher-img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.teacher-body {
+    text-align: center;
+    padding: 15px;
+}
+
+.teacher-name {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.teacher-role {
+    color: #ff5757;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.teacher-subject {
+    color: #777;
+    margin-bottom: 4px;
+}
+
+.teacher-phone {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #444;
+}
+*/
+
+/* --- Cấu trúc chung --- */
+
+.teacher-container {
+    margin-top: 50px;
+    padding-bottom: 50px;
+    background-image: url('/img/nen1.jpg'); /* Nền sáng nhẹ nếu cần */
+}
+
+.teacher-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    color: #222;
+}
+
+.teacher-subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+/* --- Thẻ giáo viên --- */
+.teacher-card {
+    background: #fff;
+    border-radius: 20px; /* Bo góc lớn giống mẫu */
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Bóng nhẹ */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    height: 100%; /* Đảm bảo chiều cao bằng nhau */
+}
+
+    .teacher-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        background-color: #B0E0E6;
+    }
+
+/* --- Vùng chứa ảnh & Social Icons --- */
+.img-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px; /* Bo góc ảnh riêng */
+    margin: 15px; /* Tạo khoảng cách ảnh với viền card */
+}
+
+.teacher-img {
+    width: 100%;
+    height: 260px; /* Chiều cao cố định để ảnh đều nhau */
+    object-fit: cover; /* Cắt ảnh để vừa khung mà không méo */
+    border-radius: 20px;
+    transition: transform 0.5s ease;
+}
+
+.teacher-card:hover .teacher-img {
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+  
+}
+
+/* --- Nút mạng xã hội (Điểm nhấn) --- */
+.social-icons {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    display: flex;
+    flex-direction: column-reverse; /* Xếp ngược từ dưới lên */
+    gap: 10px;
+    z-index: 2;
+}
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 18px;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Nút chia sẻ chính (Màu vàng cam) */
+.share-btn {
+    background-color: #ffc107; /* Màu vàng */
+    color: #000;
+    z-index: 3;
+}
+
+/* Các nút ẩn (Facebook, Twitter - Màu trắng) */
+.social-hidden {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.4s ease;
+    visibility: hidden;
+}
+
+    .social-hidden .social-btn {
+        background-color: #fff;
+        color: #333;
+    }
+
+        .social-hidden .social-btn:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+/* Hiệu ứng hover để hiện nút */
+.teacher-card:hover .social-hidden {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+   
+}
+
+/* --- Nội dung bên dưới --- */
+.teacher-body {
+    padding: 10px 15px 20px;
+}
+
+.teacher-name {
+    font-weight: 700;
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.teacher-role {
+    color: #e74c3c; /* Màu đỏ nhạt */
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.teacher-subject {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.teacher-phone {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+    .teacher-phone i {
+        margin-right: 5px;
+    }
+
+/* --- Responsive (Tùy chỉnh thêm nếu cần) --- */
+@media (max-width: 768px) {
+    .teacher-img {
+        height: 300px; /* Tăng chiều cao ảnh trên mobile cho rõ */
+    }
+
+    .teacher-card {
+        margin-bottom: 20px;
+    }
+}
+/* Giữ nguyên các CSS cũ của .social-btn, chỉ thêm CSS cho thẻ img bên trong */
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex; /* Quan trọng để căn giữa ảnh */
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    overflow: hidden; /* Đảm bảo ảnh không bị tràn ra ngoài */
+}
+
+    /* CSS MỚI: Định dạng cho icon ảnh */
+    .social-btn img {
+        width: 35px; /* Kích thước ảnh icon (khoảng 50% nút) */
+        height: 35px;
+        object-fit: contain; /* Giữ tỷ lệ ảnh không bị méo */
+        display: block;
+    }
+
+/* --- Màu sắc nút (Giữ nguyên như cũ) --- */
+
+/* Nút chia sẻ chính (Màu vàng cam) */
+.share-btn {
+    background-color: #ffc107;
+    z-index: 3;
+}
+
+/* Các nút ẩn (Màu trắng) */
+.social-hidden .social-btn {
+    background-color: #fff;
+}
+
+    .social-hidden .social-btn:hover {
+        background-color: #FA8072; /* Đổi màu nền nhẹ khi hover */
+    }
+
+
+/*Thong bao */
+.modal-backdrop.show {
+    opacity: 0.65;
+}
+
+.thongbao-content {
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+.modal-body {
+    padding-top: 10px; /* giảm sát lên */
+}
+
+.thongbao-noidung {
+    margin-top: 6px; /* giảm khoảng cách trên */
+    padding: 10px; /* giữ nội dung không dính viền */
+    background: #f8f9fa;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/*new thong báo*/
+.thongbao-content table {
+    width: 100% !important;
+    border-collapse: collapse;
+}
+
+.thongbao-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.thongbao-content p {
+    margin-bottom: 0.75rem;
+}
+
+.thongbao-content * {
+    word-wrap: break-word;
+}

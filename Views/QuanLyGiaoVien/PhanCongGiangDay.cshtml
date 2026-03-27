@@ -1,0 +1,219 @@
+﻿
+@{
+    ViewBag.Title = "PhanCongGiangDay";
+    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+@model List<demomvc.Models.GiaoVienVM>
+<style>
+    /* Link trong bảng */
+    table a {
+        text-decoration: none;
+        color: black;
+        font-weight: 600;
+    }
+
+        table a:hover {
+            color: #c10000;
+        }
+
+    /* Header cố định */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        background-color: #2f5f73 !important;
+        color: white;
+        z-index: 5;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    td[name="hoten"] {
+        font-weight: 700;
+    }
+
+
+    /* Màu xen kẽ */
+    .table tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    /* Hover */
+    .table tbody tr:hover {
+        background-color: #e6f2ff;
+        transition: 0.2s;
+    }
+
+    .btn-back {
+        display: inline-block;
+        padding: 8px 16px;
+        background: #2f5f73;
+        color: white !important;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+        .btn-back:hover {
+            background: #1d4250;
+            color: #fff;
+            transform: translateX(-3px); /* Hiệu ứng kéo nhẹ sang trái */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+        }
+
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin: 20px auto;
+        max-width: 850px;
+    }
+
+        .search-container select,
+        .search-container input {
+            height: 42px;
+            border-radius: 8px;
+            border: 1px solid #c8c8c8;
+            padding: 6px 12px;
+            font-size: 15px;
+        }
+
+        .search-container select {
+            width: 180px;
+        }
+
+        .search-container input {
+            flex: 1;
+        }
+
+    .btn-search {
+        height: 42px;
+        padding: 0 22px;
+        border-radius: 8px;
+        border: none;
+        background-color: #2f5f73;
+        color: white;
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+        .btn-search:hover {
+            background-color: #1e4353;
+            color: #fff;
+            cursor: pointer;
+        }
+</style>
+<div class="search-container">
+
+    <input id="searchInput" type="search" class="form-control"
+           placeholder="Nhập họ tên giáo viên..." value="@ViewBag.Keyword" />
+
+    <button class="btn-search" onclick="searchGV()">Tìm kiếm</button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã giáo viên</th>
+            <th>Họ tên</th>
+            <th>Môn học được phân công</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="row_@item.GiaoVienID">
+                <td>@item.GiaoVienID</td>
+                <td name="hoten">@item.HoTen</td>
+                <td id="monhoc_@item.GiaoVienID">@item.TenMonHoc</td>
+
+                <td id="action_@item.GiaoVienID">
+                    <button class="btn btn-primary" onclick="showDropdown(@item.GiaoVienID)">
+                        Phân công
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="@Url.Action("Index","QuanLyGiaoVien")" class="btn-back">← Quay lại</a>
+
+
+<script>
+    function showDropdown(id) {
+
+        var html = `
+            <select id="select_${id}" class="form-control">
+                @foreach (var m in ViewBag.MonHoc)
+                {
+                    <option value="@m.MonHocID">@m.TenMonHoc</option>
+                }
+            </select>
+        `;
+
+        document.getElementById("monhoc_" + id).innerHTML = html;
+
+        document.getElementById("action_" + id).innerHTML =
+            `<button class="btn btn-success" onclick="saveMon(${id})">Lưu</button>
+            <button class="btn btn-secondary" onclick="cancelEdit(${id})">Hủy</button>`;
+    }
+
+    function saveMon(id) {
+
+        var monhoc = document.getElementById("select_" + id).value;
+
+        $.post("/QuanLyGiaoVien/CapNhatPhanCong",
+            {
+                giaoVienID: id,
+                monHocID: monhoc
+            },
+            function (res) {
+                if (res.success) {
+                    alert("Lưu thành công!");
+                    location.reload();
+                } else {
+                    alert("Lỗi lưu dữ liệu!");
+                }
+            }
+        ).fail(function () {
+            alert("AJAX lỗi — kiểm tra lại URL hoặc console!");
+        });
+    }
+    function searchGV() {
+        let keyword = document.getElementById("searchInput").value.trim();
+
+        // Điều hướng lại về action Index + gửi keyword
+        window.location.href = "/QuanLyGiaoVien/PhanCongGiangDay?type=hoten&keyword=" + encodeURIComponent(keyword);
+    }
+    // vit den dau tim toi đó
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let keyword = this.value.toLowerCase().trim();
+        let rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(row => {
+            let hoten = row.querySelector('td[name="hoten"]').innerText.toLowerCase();
+
+            if (hoten.includes(keyword)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
+    function cancelEdit(id) {
+        location.reload();
+    }
+
+</script>
