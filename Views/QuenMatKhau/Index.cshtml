@@ -1,33 +1,16 @@
-﻿
-@{
-    ViewBag.Title = "Nhap email";
-    Layout = "~/Views/Shared/Tranhchu_LayoutPage1.cshtml";
+﻿@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <input type="email" name="email" placeholder="Nhập email" required />
+    <button type="submit">Gửi yêu cầu</button>
 }
 
-<div class="form-area">
-    <div class="wrapper">
-        <h2>Queen mat khau</h2>
-
-        @if (ViewBag.Error != null)
-        {
-            <div class="alert alert-danger">@ViewBag.Error</div>
-        }
-        @if (ViewBag.Message != null)
-        {
-            <div class="alert alert-success">@ViewBag.Error</div>
-        }
-
-        @using (Html.BeginForm())
-            {
-                <div class="box">
-                    <input type="email" name="email" placeholder="Nhap email cuar ban" required />
-
-                </div>
-                <button type="submit">Gui yeu cau</button>
-            }
-        <br />
-        <a href="@Url.Action("Index","DangNhap")">Quay Lai dang nhap</a>
-    </div>
-</div>
-
-  
+@if (ViewBag.Error != null)
+{
+    <div style="color:red">@ViewBag.Error</div>
+}
+@if (ViewBag.Message != null)
+{
+    <div style="color:green">@ViewBag.Message</div>
+}

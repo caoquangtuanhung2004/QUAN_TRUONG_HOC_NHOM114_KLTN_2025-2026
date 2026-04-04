@@ -451,6 +451,8 @@
     <Content Include="Views\DemThongBao\ThongBaoNguoiDung.cshtml" />
     <Content Include="Views\DemThongBao\ChiTietThongBaoNguoiDung.cshtml" />
     <Content Include="Views\QuenMatKhau\Index.cshtml" />
+    <Content Include="Views\QuenMatKhau\DatLaiMatKhau.cshtml" />
+    <Content Include="Views\QuenMatKhau\TokenKhongHopLe.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

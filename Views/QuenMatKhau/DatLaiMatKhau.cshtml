@@ -1,0 +1,15 @@
+﻿
+@model demomvc.Models.ResetModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Token)
+
+    <input type="password" name="MatKhauMoi" placeholder="Mật khẩu mới" required />
+    <input type="password" name="XacNhanMatKhau" placeholder="Xác nhận mật khẩu" required />
+
+    <button type="submit">Đổi mật khẩu</button>
+}
+
+@Html.ValidationSummary()

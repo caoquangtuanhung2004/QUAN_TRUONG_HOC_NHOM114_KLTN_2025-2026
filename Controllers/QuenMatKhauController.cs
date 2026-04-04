@@ -1,20 +1,17 @@
 ﻿using demomvc.App_Start;
 using demomvc.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
-using System.Web;
 using System.Web.Mvc;
 
 namespace demomvc.Controllers
 {
     public class QuenMatKhauController : Controller
     {
-        QuanLyTruongHocEntities db = new QuanLyTruongHocEntities();
-        // GET: QuenMatKhau
+        private QuanLyTruongHocEntities db = new QuanLyTruongHocEntities();
 
         //nhap email
         [HttpGet]
@@ -23,79 +20,82 @@ namespace demomvc.Controllers
             return View();
         }
 
-        //guiwr yeeu caauf reset
-
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(string email)
         {
-            if (string.IsNullOrEmpty(email))
+            if (string.IsNullOrWhiteSpace(email))
             {
-                ViewBag.error = "vui long nhap email";
+                ViewBag.Error = "Vui lòng nhập email";
                 return View();
             }
 
             var user = db.NguoiDung.FirstOrDefault(x => x.Email == email);
 
-            if(user != null)
+            if (user != null)
             {
                 string token = GenerateToken();
 
                 user.ResetToken = token;
-                user.ResetTokenExpiry = DateTime.Now.AddMinutes(15);
+                user.ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15);
 
                 db.SaveChanges();
+
                 SendResetEmail(user.Email, token);
             }
 
-            ViewBag.message = "Neeu email ton tai, chungs toi da gui link dat laij mat khau qua email cua ban";
+            ViewBag.Message = "Nếu email tồn tại, link reset đã được gửi.";
             return View();
         }
 
-        // mo link reset
+        // 2. mo link email
         public ActionResult DatLaiMatKhau(string token)
         {
-            var user = db.NguoiDung.FirstOrDefault(x => x.ResetToken == token && x.ResetTokenExpiry > DateTime.Now);
-
-            if(user == null)
-            {
+            if (string.IsNullOrEmpty(token))
                 return View("TokenKhongHopLe");
-            }
+
+            var user = db.NguoiDung.FirstOrDefault(x =>
+                x.ResetToken == token &&
+                x.ResetTokenExpiry > DateTime.UtcNow
+            );
+
+            if (user == null)
+                return View("TokenKhongHopLe");
+
             return View(new ResetModel { Token = token });
         }
 
-        //Luu mat khau
+        //luu lai mat khau
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult DatLaiMatKhau(ResetModel model)
         {
-            var user = db.NguoiDung.FirstOrDefault(x => x.ResetToken == model.Token &&
-                                                    x.ResetTokenExpiry > DateTime.Now);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = db.NguoiDung.FirstOrDefault(x =>
+                x.ResetToken == model.Token &&
+                x.ResetTokenExpiry > DateTime.UtcNow
+            );
 
             if (user == null)
-            {
                 return View("TokenKhongHopLe");
-
-            }
-            if(model.MatKhauMoi != model.XacNhanMatKhau)
-            {
-                ModelState.AddModelError("", "Mat khau khong khop");
-                return View(model);
-            }
 
             user.MatKhau = PasswordHelper.HashPassword(model.MatKhauMoi);
 
+            // XÓA TOKEN
             user.ResetToken = null;
             user.ResetTokenExpiry = null;
 
             db.SaveChanges();
 
-            TempData["Success"] = "Dat laij mat khau";
+            TempData["Success"] = "Đặt lại mật khẩu thành công";
             return RedirectToAction("Index", "DangNhap");
-
         }
 
-        //tao token
+        //helper
 
-        private string generateToken()
+        private string GenerateToken()
         {
             byte[] data = new byte[32];
             using (var rng = RandomNumberGenerator.Create())
@@ -105,30 +105,37 @@ namespace demomvc.Controllers
             return Convert.ToBase64String(data);
         }
 
-
-        //guiwr email
-        private void SendResetEmail(string toEmail, string token)
+        private void SendResetEmail(string email, string token)
         {
-            string resetLink = Url.Action(
-                    "DatLaiMatKhau",
+            string link = Url.Action(
+                 "DatLaiMatKhau",
                     "QuenMatKhau",
-                    new {token = token},
-                    protocol: Request.Url.Scheme
-                );
+                 new { token = token },
+                 protocol: Request.Url.Scheme
+            );
 
-            MailMessage mail = new MailMessage();
-            mail.To.Add(toEmail);
-            mail.Subject = "Dat lai mat khau";
-            mail.Body = $"Nhan vao link sau de dat lai mat khau:<br/><a href='{resetLink}'>Đặt lại mật khẩu</a>";
-            mail.IsBodyHtml = true;
+            // 👇 THÊM DÒNG NÀY
+            System.Diagnostics.Debug.WriteLine("RESET LINK: " + link);
 
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("yourgmail.com", "app_password");
-            smtp.EnableSsl = true;
-            smtp.Send(mail);
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress("caoquangtuanhung2004@gmail.com");
+                mail.To.Add(email);
+                mail.Subject = "Đặt lại mật khẩu";
+                mail.Body = $"Click vào link: <a href='{link}'>Reset Password</a>";
+                mail.IsBodyHtml = true;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.Credentials = new NetworkCredential(
+                        "caoquangtuanhung2004@gmail.com",
+                        "qbmnapuiioipbjly"
+                    );
+                    smtp.EnableSsl = true;
+
+                    smtp.Send(mail);
+                }
+            }
         }
-
-
-
     }
 }
